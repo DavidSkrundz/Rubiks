@@ -1,0 +1,15 @@
+Project Title: Rubik's Cube
+
+Team: David Skrundz, Ryan Huard
+
+Description:
+	Simulate an interactive Rubik's Cube
+
+Milestones:
+ - Create a 3x3x3 Rubik's Cube that can be manipulated
+ - Allow the user to manipulate the Rubik's Cube directly
+ - Randomize the Rubik's Cube at the beginning in a way that still makes it solvable
+ - Add a check for a win condition and a timer/move counter
+ - Add a solver that can solve arbitrary 3x3x3 Rubik's Cubes while presenting the moves required to the user
+ - [If time permits] Improve the user interface and the user experience by rendering the Rubik's Cube in 3D, and improving the control scheme.
+ - [If time permits] Extend the program to make NxNxN Cubes for any N. Also optimize the calculation (for rotation) if needed

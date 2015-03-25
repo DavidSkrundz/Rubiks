@@ -12,20 +12,20 @@ class CubeHistoryRenderer:
 	def __init__(self, x, y, blocksWide, height):
 		# If CubeRenderer.RotationStepSprites is empty add the sprites
 		if not CubeHistoryRenderer.RotationStepSprites: # all 24x24 images
-			CubeHistoryRenderer.RotationStepSprites[Cube.Center] = pygame.image.load("assets/3x3/C.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Center_] = pygame.image.load("assets/3x3/C_.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Bottom] = pygame.image.load("assets/3x3/D.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Bottom_] = pygame.image.load("assets/3x3/D_.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Front] = pygame.image.load("assets/3x3/F.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Front_] = pygame.image.load("assets/3x3/F_.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Left] = pygame.image.load("assets/3x3/L.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Left_] = pygame.image.load("assets/3x3/L_.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Middle] = pygame.image.load("assets/3x3/M.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Middle_] = pygame.image.load("assets/3x3/M_.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Right] = pygame.image.load("assets/3x3/R.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Right_] = pygame.image.load("assets/3x3/R_.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Top] = pygame.image.load("assets/3x3/U.png").convert()
-			CubeHistoryRenderer.RotationStepSprites[Cube.Top_] = pygame.image.load("assets/3x3/U_.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Center] = pygame.image.load("../assets/3x3/C.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Center_] = pygame.image.load("../assets/3x3/C_.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Bottom] = pygame.image.load("../assets/3x3/D.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Bottom_] = pygame.image.load("../assets/3x3/D_.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Front] = pygame.image.load("../assets/3x3/F.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Front_] = pygame.image.load("../assets/3x3/F_.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Left] = pygame.image.load("../assets/3x3/L.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Left_] = pygame.image.load("../assets/3x3/L_.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Middle] = pygame.image.load("../assets/3x3/M.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Middle_] = pygame.image.load("../assets/3x3/M_.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Right] = pygame.image.load("../assets/3x3/R.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Right_] = pygame.image.load("../assets/3x3/R_.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Top] = pygame.image.load("../assets/3x3/U.png").convert()
+			CubeHistoryRenderer.RotationStepSprites[Cube.Top_] = pygame.image.load("../assets/3x3/U_.png").convert()
 
 		self.x = x
 		self.y = y

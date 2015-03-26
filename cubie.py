@@ -152,33 +152,21 @@ class Cubie:
 
 	def rotateX(self, angle):
 		self.targetX += angle
-# 			oldPoint = self.points[i]
-# 			self.points[i] = Point(oldPoint.x, oldPoint.z, -1 * oldPoint.y)
 
-# 	def rotateX_(self):
-# 		for i in range(len(self.points)):
-# 			self.points[i].rotateX(90)
-# 			oldPoint = self.points[i]
-# 			self.points[i] = Point(oldPoint.x, -1 * oldPoint.z, oldPoint.y)
+	def rotateX_(self, angle):
+		for i in range(len(self.points)):
+			self.points[i] = self.points[i].rotateX(angle)
 
 	def rotateY(self, angle):
 		self.targetY += angle
-# 			oldPoint = self.points[i]
-# 			self.points[i] = Point(-1 * oldPoint.z, oldPoint.y, oldPoint.x)
 
-# 	def rotateY_(self):
-# 		for i in range(len(self.points)):
-# 			self.points[i].rotateY(90)
-# 			oldPoint = self.points[i]
-# 			self.points[i] = Point(oldPoint.z, oldPoint.y, -1 * oldPoint.x)
+	def rotateY_(self, angle):
+		for i in range(len(self.points)):
+			self.points[i] = self.points[i].rotateY(angle)
 
 	def rotateZ(self, angle):
 		self.targetZ += angle
-# 			oldPoint = self.points[i]
-# 			self.points[i] = Point(oldPoint.y, -1 * oldPoint.x, oldPoint.z)
 
-# 	def rotateZ_(self):
-# 		for i in range(len(self.points)):
-# 			self.points[i].rotateZ(90)
-# 			oldPoint = self.points[i]
-# 			self.points[i] = Point(-1 * oldPoint.y, oldPoint.x, oldPoint.z)
+	def rotateZ_(self, angle):
+		for i in range(len(self.points)):
+			self.points[i] = self.points[i].rotateZ(angle)

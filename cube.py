@@ -166,7 +166,7 @@ class Cube:
 				doneUpdate = False
 		return doneUpdate
 
-	def U_(self):
+	def U_(self, animate=True):
 		tempCubie = self.cubies[0]
 		self.cubies[0] = self.cubies[6]
 		self.cubies[6] = self.cubies[8]
@@ -179,9 +179,12 @@ class Cube:
 		self.cubies[5] = tempCubie
 
 		for i in [0,1,2,3,4,5,6,7,8]:
-			self.cubies[i].rotateZ(-90)
+			if animate:
+				self.cubies[i].rotateZ(-90)
+			else:
+				self.cubies[i].rotateZ_(-90)
 
-	def U(self):
+	def U(self, animate=True):
 		tempCubie = self.cubies[0]
 		self.cubies[0] = self.cubies[2]
 		self.cubies[2] = self.cubies[8]
@@ -194,9 +197,12 @@ class Cube:
 		self.cubies[3] = tempCubie
 
 		for i in [0,1,2,3,4,5,6,7,8]:
-			self.cubies[i].rotateZ(90)
+			if animate:
+				self.cubies[i].rotateZ(90)
+			else:
+				self.cubies[i].rotateZ_(90)
 
-	def F_(self):
+	def F_(self, animate=True):
 		tempCubie = self.cubies[6]
 		self.cubies[6] = self.cubies[17]
 		self.cubies[17] = self.cubies[19]
@@ -209,9 +215,12 @@ class Cube:
 		self.cubies[11] = tempCubie
 
 		for i in [6,7,8,9,10,11,17,18,19]:
-			self.cubies[i].rotateY(90)
+			if animate:
+				self.cubies[i].rotateY(90)
+			else:
+				self.cubies[i].rotateY_(90)
 
-	def F(self):
+	def F(self, animate=True):
 		tempCubie = self.cubies[6]
 		self.cubies[6] = self.cubies[8]
 		self.cubies[8] = self.cubies[19]
@@ -224,9 +233,12 @@ class Cube:
 		self.cubies[9] = tempCubie
 
 		for i in [6,7,8,9,10,11,17,18,19]:
-			self.cubies[i].rotateY(-90)
+			if animate:
+				self.cubies[i].rotateY(-90)
+			else:
+				self.cubies[i].rotateY_(-90)
 
-	def R_(self):
+	def R_(self, animate=True):
 		tempCubie = self.cubies[0]
 		self.cubies[0] = self.cubies[23]
 		self.cubies[23] = self.cubies[17]
@@ -238,10 +250,13 @@ class Cube:
 		self.cubies[20] = self.cubies[9]
 		self.cubies[9] = tempCubie
 
-		for i in [0,3,6,9,15,16,17,20,23]:
-			self.cubies[i].rotateX(90)
+		for i in [0,3,6,9,12,15,16,17,20,23]:
+			if animate:
+				self.cubies[i].rotateX(90)
+			else:
+				self.cubies[i].rotateX_(90)
 
-	def R(self):
+	def R(self, animate=True):
 		tempCubie = self.cubies[0]
 		self.cubies[0] = self.cubies[6]
 		self.cubies[6] = self.cubies[17]
@@ -253,10 +268,13 @@ class Cube:
 		self.cubies[20] = self.cubies[15]
 		self.cubies[15] = tempCubie
 
-		for i in [0,3,6,9,15,16,17,20,23]:
-			self.cubies[i].rotateX(-90)
+		for i in [0,3,6,9,12,15,16,17,20,23]:
+			if animate:
+				self.cubies[i].rotateX(-90)
+			else:
+				self.cubies[i].rotateX_(-90)
 
-	def L_(self):
+	def L_(self, animate=True):
 		tempCubie = self.cubies[8]
 		self.cubies[8] = self.cubies[19]
 		self.cubies[19] = self.cubies[25]
@@ -269,9 +287,12 @@ class Cube:
 		self.cubies[13] = tempCubie
 
 		for i in [2,5,8,11,13,19,22,25]:
-			self.cubies[i].rotateX(-90)
+			if animate:
+				self.cubies[i].rotateX(-90)
+			else:
+				self.cubies[i].rotateX_(-90)
 
-	def L(self):
+	def L(self, animate=True):
 		tempCubie = self.cubies[8]
 		self.cubies[8] = self.cubies[2]
 		self.cubies[2] = self.cubies[25]
@@ -284,9 +305,12 @@ class Cube:
 		self.cubies[11] = tempCubie
 
 		for i in [2,5,8,11,13,19,22,25]:
-			self.cubies[i].rotateX(90)
+			if animate:
+				self.cubies[i].rotateX(90)
+			else:
+				self.cubies[i].rotateX_(90)
 
-	def D_(self):
+	def D_(self, animate=True):
 		tempCubie = self.cubies[17]
 		self.cubies[17] = self.cubies[23]
 		self.cubies[23] = self.cubies[25]
@@ -298,10 +322,13 @@ class Cube:
 		self.cubies[24] = self.cubies[22]
 		self.cubies[22] = tempCubie
 
-		for i in [17,18,19,20,22,23,24,25]:
-			self.cubies[i].rotateZ(90)
+		for i in [17,18,19,20,21,22,23,24,25]:
+			if animate:
+				self.cubies[i].rotateZ(90)
+			else:
+				self.cubies[i].rotateZ_(90)
 
-	def D(self):
+	def D(self, animate=True):
 		tempCubie = self.cubies[17]
 		self.cubies[17] = self.cubies[19]
 		self.cubies[19] = self.cubies[25]
@@ -313,10 +340,13 @@ class Cube:
 		self.cubies[24] = self.cubies[20]
 		self.cubies[20] = tempCubie
 
-		for i in [17,18,19,20,22,23,24,25]:
-			self.cubies[i].rotateZ(-90)
+		for i in [17,18,19,20,21,22,23,24,25]:
+			if animate:
+				self.cubies[i].rotateZ(-90)
+			else:
+				self.cubies[i].rotateZ_(-90)
 
-	def M_(self):
+	def M_(self, animate=True):
 		tempCubie = self.cubies[9]
 		self.cubies[9] = self.cubies[15]
 		self.cubies[15] = self.cubies[13]
@@ -329,9 +359,12 @@ class Cube:
 		self.cubies[12] = tempCubie
 
 		for i in [9,10,11,12,13,14,15,16]:
-			self.cubies[i].rotateZ(90)
+			if animate:
+				self.cubies[i].rotateZ(90)
+			else:
+				self.cubies[i].rotateZ_(90)
 
-	def M(self):
+	def M(self, animate=True):
 		tempCubie = self.cubies[9]
 		self.cubies[9] = self.cubies[11]
 		self.cubies[11] = self.cubies[13]
@@ -344,9 +377,12 @@ class Cube:
 		self.cubies[16] = tempCubie
 
 		for i in [9,10,11,12,13,14,15,16]:
-			self.cubies[i].rotateZ(-90)
+			if animate:
+				self.cubies[i].rotateZ(-90)
+			else:
+				self.cubies[i].rotateZ_(-90)
 
-	def C(self):
+	def C(self, animate=True):
 		tempCubie = self.cubies[1]
 		self.cubies[1] = self.cubies[7]
 		self.cubies[7] = self.cubies[18]
@@ -359,9 +395,12 @@ class Cube:
 		self.cubies[14] = tempCubie
 
 		for i in [1,4,7,10,14,18,21,24]:
-			self.cubies[i].rotateX(-90)
+			if animate:
+				self.cubies[i].rotateX(-90)
+			else:
+				self.cubies[i].rotateX_(-90)
 
-	def C_(self):
+	def C_(self, animate=True):
 		tempCubie = self.cubies[1]
 		self.cubies[1] = self.cubies[24]
 		self.cubies[24] = self.cubies[18]
@@ -374,24 +413,27 @@ class Cube:
 		self.cubies[10] = tempCubie
 
 		for i in [1,4,7,10,14,18,21,24]:
-			self.cubies[i].rotateX(90)
+			if animate:
+				self.cubies[i].rotateX(90)
+			else:
+				self.cubies[i].rotateX_(90)
 
-	def UUU(self):
-		self.U_()
-		self.M()
-		self.D()
+	def UUU(self, animate=True):
+		self.U_(animate)
+		self.M(animate)
+		self.D(animate)
 
-	def UUU_(self):
-		self.U()
-		self.M_()
-		self.D_()
+	def UUU_(self, animate=True):
+		self.U(animate)
+		self.M_(animate)
+		self.D_(animate)
 
-	def RRR(self):
-		self.R()
-		self.C()
-		self.L_()
+	def RRR(self, animate=True):
+		self.R(animate)
+		self.C(animate)
+		self.L_(animate)
 
-	def RRR_(self):
-		self.R_()
-		self.C_()
-		self.L()
+	def RRR_(self, animate=True):
+		self.R_(animate)
+		self.C_(animate)
+		self.L(animate)

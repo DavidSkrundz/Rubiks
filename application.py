@@ -79,10 +79,15 @@ class Application:
 					self.keypressEventQueue.append(event)
 				# elif event.type == pygame.KEYUP:
 				# 	pass
-				# elif event.type == pygame.MOUSEMOTION:
-				# 	pass
-				# elif event.type == pygame.MOUSEBUTTONUP:
-				# 	pass
+				elif event.type == pygame.MOUSEMOTION:
+					for runnable in self.runnables:
+						x, y = event.pos
+						runnable.mouseMove(event)
+				elif event.type == pygame.MOUSEBUTTONUP:
+					if event.button == 1 or event.button == 3:
+						for runnable in self.runnables:
+							x, y = event.pos
+							runnable.click(x, y, event.button, False)
 				elif event.type == pygame.MOUSEBUTTONDOWN:
 					if event.button == 4: # Scroll Down
 						for runnable in self.runnables:

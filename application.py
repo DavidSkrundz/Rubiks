@@ -1,3 +1,6 @@
+"""
+Main Application class to manage everything else
+"""
 import pygame
 
 class Application:
@@ -123,7 +126,7 @@ class Application:
 
 			# Render
 			for runnable in self.runnables:
-				self.screen.fill((0,0,0))
+				self.screen.fill((0, 0, 0))
 				runnable.render(self.screen)
 			pygame.display.flip() # Draw what was drawn this frame to the screen
 

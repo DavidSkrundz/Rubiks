@@ -2,6 +2,8 @@
 Some helper functions
 """
 
+import math
+
 class Point:
 	"""
 	A Point

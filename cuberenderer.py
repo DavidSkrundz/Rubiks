@@ -1,6 +1,9 @@
 from printer import Printer
 import pygame
 from pygame import Color
+from copy import deepcopy
+from operator import itemgetter
+from cubie import Cubie
 
 class CubeRenderer:
 	"""
@@ -9,31 +12,56 @@ class CubeRenderer:
 	def __init__(self):
 		self.textPrinter = Printer()
 
-	def render(self, screen, cube, x, y):
-		self.render2D(screen, cube, x, y)
+		self.rotateX = -45
+		self.rotateY = 0
+		self.rotateZ = 30
 
-	def render2D(self, screen, cube, x, y):
-		faces = cube.faces()
-		# Draw time
-		if cube.startTime:
-			self.textPrinter.moveTo(x, y)
-			if cube.endTime:
-				self.textPrinter.printText(screen, str(round((cube.endTime - cube.startTime) / 10) / 100), Color(255, 255, 255))
-			else:
-				self.textPrinter.printText(screen, str(round((pygame.time.get_ticks() - cube.startTime) / 10) / 100), Color(255, 255, 255))
-			self.textPrinter.printText(screen, str(len(cube.moveHistory)), Color(255, 255, 255))
-		squareSize = 19
-		for i in range(cube.n):
-			for j in range(cube.n):
-				# Top
-				pygame.draw.rect(screen, cube.colorForValue(faces[0][i][j]), [3*(squareSize+1) + j*(squareSize+1) + x, 0*(squareSize+1) + i*(squareSize+1) + y, squareSize, squareSize], 0)
-				# Front
-				pygame.draw.rect(screen, cube.colorForValue(faces[1][i][j]), [3*(squareSize+1) + j*(squareSize+1) + x, 3*(squareSize+1) + i*(squareSize+1) + y, squareSize, squareSize], 0)
-				# Right
-				pygame.draw.rect(screen, cube.colorForValue(faces[2][i][j]), [6*(squareSize+1) + j*(squareSize+1) + x, 3*(squareSize+1) + i*(squareSize+1) + y, squareSize, squareSize], 0)
-				# Back
-				pygame.draw.rect(screen, cube.colorForValue(faces[3][i][j]), [9*(squareSize+1) + j*(squareSize+1) + x, 3*(squareSize+1) + i*(squareSize+1) + y, squareSize, squareSize], 0)
-				# Left
-				pygame.draw.rect(screen, cube.colorForValue(faces[4][i][j]), [0*(squareSize+1) + j*(squareSize+1) + x, 3*(squareSize+1) + i*(squareSize+1) + y, squareSize, squareSize], 0)
-				# Bottom
-				pygame.draw.rect(screen, cube.colorForValue(faces[5][i][j]), [3*(squareSize+1) + j*(squareSize+1) + x, 6*(squareSize+1) + i*(squareSize+1) + y, squareSize, squareSize], 0)
+# 		self.rotateX = 90 + 30
+# 		self.rotateY = -30
+# 		self.rotateZ = 165
+
+		self.win_width = 100
+		self.win_height = 100
+		self.fov = 600
+		self.viewer_distance = 10
+
+	def render(self, screen, cube, x, y):
+		t = [] # Transformed vertices
+		f = [] # Converted faces
+		c = [] # Colors
+
+		# Save the data into the arrays
+		for cubie in cube.cubies:
+			faceVertexOffset = len(t)
+			for point in cubie.points:
+				v = point.rotateX(self.rotateX).rotateY(self.rotateY).rotateZ(self.rotateZ).project(self.win_width, self.win_height, self.fov, self.viewer_distance)
+				t.append(v)
+			for face in cubie.faces:
+				newFace = deepcopy(face)
+				for i in range(4):
+					newFace[i] += faceVertexOffset
+				f.append(newFace)
+			for color in cubie.faceColors:
+				c.append(color)
+
+		# Calculate the average Z values of each face.
+		averageZ = []
+		i = 0
+		for face in f:
+			z = (t[f[i][0]].z + t[f[i][1]].z + t[f[i][2]].z + t[f[i][3]].z) / 4.0
+			averageZ.append([i, z])
+			i += 1
+
+		# Now draw with Painter's algorithm
+		for faceData in sorted(averageZ, key=itemgetter(1), reverse=True):
+			faceIndex = faceData[0]
+			face = f[faceIndex]
+			points = [
+						(x + t[f[faceIndex][0]].x, y + t[f[faceIndex][0]].y), (x + t[f[faceIndex][1]].x, y + t[f[faceIndex][1]].y),
+						(x + t[f[faceIndex][1]].x, y + t[f[faceIndex][1]].y), (x + t[f[faceIndex][2]].x, y + t[f[faceIndex][2]].y),
+						(x + t[f[faceIndex][2]].x, y + t[f[faceIndex][2]].y), (x + t[f[faceIndex][3]].x, y + t[f[faceIndex][3]].y),
+						(x + t[f[faceIndex][3]].x, y + t[f[faceIndex][3]].y), (x + t[f[faceIndex][0]].x, y + t[f[faceIndex][0]].y)
+					]
+			if c[faceIndex] != Cubie.Clear:
+				pygame.draw.polygon(screen, c[faceIndex], points)
+				pygame.draw.lines(screen, Cubie.Black, True, points)

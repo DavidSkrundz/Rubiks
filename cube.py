@@ -2,6 +2,7 @@
 New cube
 """
 from cubie import Cubie
+from random import randint
 
 W = Cubie.White
 R = Cubie.Red
@@ -158,6 +159,40 @@ class Cube:
 			elif activeColor != color and color != Cubie.Clear:
 				return False
 		return True
+
+	def randomize(self):
+		"""
+		Randomly applies a single move to the cube
+		"""
+		operation = randint(0,13)
+		if operation == 0:
+			self.U()
+		elif operation == 1:
+			self.U_()
+		elif operation == 2:
+			self.D()
+		elif operation == 3:
+			self.D_()
+		elif operation == 4:
+			self.L()
+		elif operation == 5:
+			self.L_()
+		elif operation == 6:
+			self.R()
+		elif operation == 7:
+			self.R_()
+		elif operation == 8:
+			self.F()
+		elif operation == 9:
+			self.F_()
+		elif operation == 10:
+			self.M()
+		elif operation == 11:
+			self.M_()
+		elif operation == 12:
+			self.C()
+		elif operation == 13:
+			self.C_()
 
 	def update(self):
 		doneUpdate = True

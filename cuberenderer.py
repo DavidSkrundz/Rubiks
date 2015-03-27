@@ -53,6 +53,14 @@ class CubeRenderer:
 			self.rotateZ -= dx
 			self.rotateX -= dy
 
+	def mouseOver(self, x, y):
+		if x > self.newX and x < self.newX + self.newW:
+			if y > self.newY and y < self.newY + self.newH:
+				return True
+		if self.mouseStartX != None:
+			return True
+		return False
+
 	def render(self, screen, cube):
 		if self.deltaRotateX > 90:
 			self.deltaRotateX -= 90

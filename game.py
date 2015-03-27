@@ -6,12 +6,68 @@ from cuberenderer import CubeRenderer
 import pygame
 from pygame.mixer import Sound
 
+handCursor = (
+	"                        ",
+	"                        ",
+	"                        ",
+	"                        ",
+	"                        ",
+	"        ..              ",
+	"     ...XX...           ",
+	"    .XX.XX.XX..         ",
+	"    .XX.XX.XX.X.        ",
+	"... .XX.XX.XX.XX.       ",
+	".XX..XXXXXXXX.XX.       ",
+	".XXX.XXXXXXXXXXX.       ",
+	" .XXXXXXXXXXXXXX.       ",
+	"  .XXXXXXXXXXXXX.       ",
+	"  .XXXXXXXXXXXXX.       ",
+	"   .XXXXXXXXXXXX.       ",
+	"   .XXXXXXXXXXX.        ",
+	"    .XXXXXXXXXX.        ",
+	"    .XXXXXXXXXX.        ",
+	"     .XXXXXXXX.         ",
+	"     .XXXXXXXX.         ",
+	"     ..........         ",
+	"                        ",
+	"                        ")
+
+handCursorClick = (
+	"     ..                 ",
+	"    .XX.                ",
+	"    .XX.                ",
+	"    .XX.                ",
+	"    .XX.                ",
+	"    .XX...              ",
+	"    .XX.XX...           ",
+	"    .XX.XX.XX..         ",
+	"    .XX.XX.XX.X.        ",
+	"... .XX.XX.XX.XX.       ",
+	".XX..XXXXXXXX.XX.       ",
+	".XXX.XXXXXXXXXXX.       ",
+	" .XXXXXXXXXXXXXX.       ",
+	"  .XXXXXXXXXXXXX.       ",
+	"  .XXXXXXXXXXXXX.       ",
+	"   .XXXXXXXXXXXX.       ",
+	"   .XXXXXXXXXXX.        ",
+	"    .XXXXXXXXXX.        ",
+	"    .XXXXXXXXXX.        ",
+	"     .XXXXXXXX.         ",
+	"     .XXXXXXXX.         ",
+	"     ..........         ",
+	"                        ",
+	"                        ")
+
+
 class Game(Runnable):
 	"""
 	Manages the game loop and the rendering loop
 	"""
-	def __init__(self):
+	def __init__(self, application):
 		Runnable.__init__(self)
+
+		self.RunningApplication = application
+		self.RunningApplication.setCursor(handCursor, 5, 1)
 
 		self.buttons = []
 		# Some buttons
@@ -72,9 +128,16 @@ class Game(Runnable):
 # 				self.__historyRenderer.surfaceY = max(self.__historyRenderer.surfaceY - 10, 0)
 
 	def mouseMove(self, event):
+		# Check Mouse Cursor and whatnot
+		if self.__cubeRenderer.mouseOver(event.pos[0], event.pos[1]):
+			self.RunningApplication.setCursor(handCursorClick, 5, 1)
+		else:
+			self.RunningApplication.setCursor(handCursor, 5, 1)
 		self.__cubeRenderer.mouseMove(event.pos[0], event.pos[1], event.rel[0], event.rel[1])
 
 	def click(self, x, y, button, press):
+		if not press:
+			self.RunningApplication.setCursor(handCursor, 5, 1)
 		self.__cubeRenderer.click(x, y, button, press)
 		if press:
 			for button in self.buttons:
@@ -145,7 +208,7 @@ class Game(Runnable):
 						self.__cubeTimer.start()
 						pygame.mixer.music.load("assets/audio/BGM.wav")
 						pygame.mixer.music.play(loops=-1)
-					rotateFunction(False)
+					rotateFunction()
 		return True
 
 	def render(self, screen):

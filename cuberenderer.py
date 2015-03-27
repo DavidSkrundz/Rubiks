@@ -61,27 +61,28 @@ class CubeRenderer:
 			return True
 		return False
 
-	def render(self, screen, cube):
-		if self.deltaRotateX > 90:
-			self.deltaRotateX -= 90
-			self.rotateZ -= 90
-			cube.UUU_(False)
-		if self.deltaRotateX < 0:
-			self.deltaRotateX += 90
-			self.rotateZ += 90
-			cube.UUU(False)
+	def render(self, screen, cube, doneUpdates):
+		if doneUpdates:
+			if self.deltaRotateX > 90:
+				self.deltaRotateX -= 90
+				self.rotateZ -= 90
+				cube.UUU_(False)
+			if self.deltaRotateX < 0:
+				self.deltaRotateX += 90
+				self.rotateZ += 90
+				cube.UUU(False)
 
-		if self.deltaRotateZ > 90:
-			if self.deltaRotateX < 10:
-				self.deltaRotateZ -= 90
-				self.rotateX -= 90
-				cube.RRR(False)
+			if self.deltaRotateZ > 90:
+				if self.deltaRotateX < 10:
+					self.deltaRotateZ -= 90
+					self.rotateX -= 90
+					cube.RRR(False)
 
-		if self.deltaRotateZ < 0:
-			if self.deltaRotateX < 10:
-				self.deltaRotateZ += 90
-				self.rotateX += 90
-				cube.RRR_(False)
+			if self.deltaRotateZ < 0:
+				if self.deltaRotateX < 10:
+					self.deltaRotateZ += 90
+					self.rotateX += 90
+					cube.RRR_(False)
 
 		pygame.draw.rect(screen, Color(40, 40, 40), (self.newX, self.newY, self.newW, self.newH), 0)
 

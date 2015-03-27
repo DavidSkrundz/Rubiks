@@ -103,6 +103,7 @@ class Game(Runnable):
 
 
 		self.__cube = None
+		self.__cubeDoneUpdates = False
 		self.__cubeTimer = CubeTimer()
 		self.__cubeRenderer = CubeRenderer(350, 200)
 
@@ -128,12 +129,17 @@ class Game(Runnable):
 # 				self.__historyRenderer.surfaceY = max(self.__historyRenderer.surfaceY - 10, 0)
 
 	def mouseMove(self, event):
+		self.__cubeRenderer.mouseMove(event.pos[0], event.pos[1], event.rel[0], event.rel[1])
 		# Check Mouse Cursor and whatnot
+		self.RunningApplication.setCursor(handCursor, 5, 7)
 		if self.__cubeRenderer.mouseOver(event.pos[0], event.pos[1]):
 			self.RunningApplication.setCursor(handCursorClick, 5, 1)
-		else:
-			self.RunningApplication.setCursor(handCursor, 5, 1)
-		self.__cubeRenderer.mouseMove(event.pos[0], event.pos[1], event.rel[0], event.rel[1])
+		x = event.pos[0]
+		y = event.pos[1]
+		for button in self.buttons:
+			if x > button.rect[0] and x < button.rect[0] + button.rect[2]:
+				if y > button.rect[1] and y < button.rect[1] + button.rect[3]:
+					self.RunningApplication.setCursor(handCursorClick, 5, 1)
 
 	def click(self, x, y, button, press):
 		if not press:
@@ -148,6 +154,7 @@ class Game(Runnable):
 
 	def tick(self, keypressEvent):
 		if self.__cube.update():
+			self.__cubeDoneUpdates = True
 			if self.__cube.isSolved() and self.playing:
 				self.playing = False
 				self.__cubeTimer.stop()
@@ -202,6 +209,7 @@ class Game(Runnable):
 					self.__cube.RRR_()
 
 				if rotateFunction != None:
+					self.__cubeDoneUpdates = False
 					if self.__cube.isSolved() and not self.playing:
 						self.playing = True
 						self.__cubeTimer.reset()
@@ -209,10 +217,12 @@ class Game(Runnable):
 						pygame.mixer.music.load("assets/audio/BGM.wav")
 						pygame.mixer.music.play(loops=-1)
 					rotateFunction()
+		else:
+			self.__cubeDoneUpdates = False
 		return True
 
 	def render(self, screen):
 		self.__cubeTimer.render(screen, 100, 300)
-		self.__cubeRenderer.render(screen, self.__cube)
+		self.__cubeRenderer.render(screen, self.__cube, self.__cubeDoneUpdates)
 		for button in self.buttons:
 			button.render(screen)

@@ -224,7 +224,7 @@ class Game(Runnable):
 
 					if rotateFunction != None:
 						self.__cubeDoneUpdates = False
-						if self.__cube.isSolved() and not self.playing:
+						if not self.playing:
 							self.playing = True
 							self.__cubeTimer.reset()
 							self.__cubeTimer.start()

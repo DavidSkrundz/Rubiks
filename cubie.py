@@ -115,6 +115,8 @@ class Cubie:
 			if set(self.faces[i]) == targetFace:
 				return self.faceColors[i]
 
+	def ready(self):
+		return self.targetX == 0 and self.targetY == 0 and self.targetZ == 0
 
 	def update(self):
 		if self.targetX > 0:
@@ -150,23 +152,23 @@ class Cubie:
 		else:
 			return True
 
-	def rotateX(self, angle):
-		self.targetX += angle
+	def rotateX(self, angle, animate=True):
+		if animate:
+			self.targetX += angle
+		else:
+			for i in range(len(self.points)):
+				self.points[i] = self.points[i].rotateX(angle)
 
-	def rotateX_(self, angle):
-		for i in range(len(self.points)):
-			self.points[i] = self.points[i].rotateX(angle)
+	def rotateY(self, angle, animate=True):
+		if animate:
+			self.targetY += angle
+		else:
+			for i in range(len(self.points)):
+				self.points[i] = self.points[i].rotateY(angle)
 
-	def rotateY(self, angle):
-		self.targetY += angle
-
-	def rotateY_(self, angle):
-		for i in range(len(self.points)):
-			self.points[i] = self.points[i].rotateY(angle)
-
-	def rotateZ(self, angle):
-		self.targetZ += angle
-
-	def rotateZ_(self, angle):
-		for i in range(len(self.points)):
-			self.points[i] = self.points[i].rotateZ(angle)
+	def rotateZ(self, angle, animate=True):
+		if animate:
+			self.targetZ += angle
+		else:
+			for i in range(len(self.points)):
+				self.points[i] = self.points[i].rotateZ(angle)

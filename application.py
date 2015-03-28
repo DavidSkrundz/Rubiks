@@ -76,6 +76,8 @@ class Application:
 				elif event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_q and event.mod == 1024: # Command-Q
 						running = False
+					if event.key == pygame.K_w and event.mod == 1024: # Command-W
+						running = False
 					self.keypressEventQueue.append(event)
 				# elif event.type == pygame.KEYUP:
 				# 	pass

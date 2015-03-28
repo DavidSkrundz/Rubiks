@@ -6,6 +6,7 @@ from cubesolverdavid import CubeSolverDavid
 from cubehistoryrenderer import CubeHistoryRenderer
 from runnable import Runnable
 import pygame
+from cubesolverdavidsearch import SearchSolver
 
 class Game(Runnable):
 	"""
@@ -103,7 +104,9 @@ class Game(Runnable):
 
 # 		self.__cubeSolver = CubeSolverOptimal()
 		self.__cubeSolver = CubeSolverDavid()
+#		self.__cubeSolver = SearchSolver()
 		self.__cubeSolver.solve(self.__cube)
+
 
 	def scroll(self, up):
 		"""

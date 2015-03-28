@@ -29,6 +29,19 @@ class CubeMoveRenderer:
 		return 4 + 5*N + 4
 
 	def render(screen, x, y, N, move, offSets):
+		if move == Cube.TurnRRR:
+			move = Cube.Right
+			offSets = [i for i in range(N)]
+		if move == Cube.TurnRRR_:
+			move = Cube.Right_
+			offSets = [i for i in range(N)]
+		if move == Cube.TurnUUU:
+			move = Cube.Top
+			offSets = [i for i in range(N)]
+		if move == Cube.TurnUUU_:
+			move = Cube.Top_
+			offSets = [i for i in range(N)]
+
 		try:
 			a = offSets[0]
 		except:

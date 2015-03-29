@@ -36,14 +36,14 @@ class Cubie:
 		self.position = position
 
 		self.points = [
-						Point(self.position.x - 0.5, self.position.y + 0.5, self.position.z + 0.5), # Left , Back , Top
-						Point(self.position.x - 0.5, self.position.y - 0.5, self.position.z + 0.5), # Left , Front, Top
-						Point(self.position.x + 0.5, self.position.y - 0.5, self.position.z + 0.5), # Right, Front, Top
-						Point(self.position.x + 0.5, self.position.y + 0.5, self.position.z + 0.5), # Right, Back , Top
-						Point(self.position.x + 0.5, self.position.y + 0.5, self.position.z - 0.5), # Right, Back , Bottom
-						Point(self.position.x + 0.5, self.position.y - 0.5, self.position.z - 0.5), # Right, Front, Bottom
-						Point(self.position.x - 0.5, self.position.y - 0.5, self.position.z - 0.5), # Left , Front, Bottom
-						Point(self.position.x - 0.5, self.position.y + 0.5, self.position.z - 0.5), # Left , Back , Bottom
+						Point(self.position.x - 0.5, self.position.y + 0.5, self.position.z - 0.5), # Left , Back , Top
+						Point(self.position.x - 0.5, self.position.y - 0.5, self.position.z - 0.5), # Left , Front, Top
+						Point(self.position.x + 0.5, self.position.y - 0.5, self.position.z - 0.5), # Right, Front, Top
+						Point(self.position.x + 0.5, self.position.y + 0.5, self.position.z - 0.5), # Right, Back , Top
+						Point(self.position.x + 0.5, self.position.y + 0.5, self.position.z + 0.5), # Right, Back , Bottom
+						Point(self.position.x + 0.5, self.position.y - 0.5, self.position.z + 0.5), # Right, Front, Bottom
+						Point(self.position.x - 0.5, self.position.y - 0.5, self.position.z + 0.5), # Left , Front, Bottom
+						Point(self.position.x - 0.5, self.position.y + 0.5, self.position.z + 0.5), # Left , Back , Bottom
 					]
 
 		self.faces = [

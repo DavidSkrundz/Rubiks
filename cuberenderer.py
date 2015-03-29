@@ -12,9 +12,9 @@ class CubeRenderer:
 	def __init__(self, x, y):
 		self.textPrinter = Printer()
 
-		self.rotateX = -90 - 30
+		self.rotateX = 0#-90 - 30
 		self.rotateY = 0
-		self.rotateZ = 45 + 90 + 90
+		self.rotateZ = 0#45 + 90 + 90
 
 		self.deltaRotateX = 45
 		self.deltaRotateZ = 40
@@ -28,7 +28,7 @@ class CubeRenderer:
 		self.viewer_distance = 10
 
 		self.newX = self.x - self.win_width
-		self.newY = self.y - self.win_height + 15
+		self.newY = self.y - self.win_height
 		self.newW = self.win_width * 3
 		self.newH = self.win_height * 3
 
@@ -50,7 +50,7 @@ class CubeRenderer:
 		if self.mouseStartX and self.mouseStartY:
 			self.deltaRotateX -= dx
 			self.deltaRotateZ -= dy
-			self.rotateZ -= dx
+			self.rotateZ += dx
 			self.rotateX -= dy
 
 	def mouseOver(self, x, y):
@@ -61,28 +61,27 @@ class CubeRenderer:
 			return True
 		return False
 
-	def render(self, screen, cube, doneUpdates):
-		if doneUpdates:
-			if self.deltaRotateX > 90:
-				self.deltaRotateX -= 90
-				self.rotateZ -= 90
-				cube.UUU_(False)
-			if self.deltaRotateX < 0:
-				self.deltaRotateX += 90
-				self.rotateZ += 90
-				cube.UUU(False)
-
-			if self.deltaRotateZ > 90:
-				if self.deltaRotateX < 10:
-					self.deltaRotateZ -= 90
-					self.rotateX -= 90
-					cube.RRR(False)
-
-			if self.deltaRotateZ < 0:
-				if self.deltaRotateX < 10:
-					self.deltaRotateZ += 90
-					self.rotateX += 90
-					cube.RRR_(False)
+	def render(self, screen, cube):
+# 		if self.deltaRotateX > 90:
+# 			self.deltaRotateX -= 90
+# 			self.rotateZ -= 90
+# 			cube.UUU_(False)
+# 		if self.deltaRotateX < 0:
+# 			self.deltaRotateX += 90
+# 			self.rotateZ += 90
+# # 			cube.UUU(False)
+#
+# 		if self.deltaRotateZ > 90:
+# 			if self.deltaRotateX < 10:
+# 				self.deltaRotateZ -= 90
+# 				self.rotateX -= 90
+# 				cube.RRR(False)
+#
+# 		if self.deltaRotateZ < 0:
+# 			if self.deltaRotateX < 10:
+# 				self.deltaRotateZ += 90
+# 				self.rotateX += 90
+# 				cube.RRR_(False)
 
 		pygame.draw.rect(screen, Color(40, 40, 40), (self.newX, self.newY, self.newW, self.newH), 0)
 
@@ -91,18 +90,22 @@ class CubeRenderer:
 		c = [] # Colors
 
 		# Save the data into the arrays
-		for cubie in cube.cubies:
-			faceVertexOffset = len(t)
-			for point in cubie.points:
-				v = point.rotateZ(self.rotateZ).rotateY(self.rotateY).rotateX(self.rotateX).project(self.win_width, self.win_height, self.fov, self.viewer_distance)
-				t.append(v)
-			for face in cubie.faces:
-				newFace = deepcopy(face)
-				for i in range(4):
-					newFace[i] += faceVertexOffset
-				f.append(newFace)
-			for color in cubie.faceColors:
-				c.append(color)
+		for zLayer in cube.cubies:
+			for yLayer in zLayer:
+				for cubie in yLayer:
+					if cubie is None:
+						continue
+					faceVertexOffset = len(t)
+					for point in cubie.points:
+						v = point.rotateZ(self.rotateZ).rotateY(self.rotateY).rotateX(self.rotateX).project(self.win_width, self.win_height, self.fov, self.viewer_distance)
+						t.append(v)
+					for face in cubie.faces:
+						newFace = deepcopy(face)
+						for i in range(4):
+							newFace[i] += faceVertexOffset
+						f.append(newFace)
+					for color in cubie.faceColors:
+						c.append(color)
 
 		# Calculate the average Z values of each face.
 		averageZ = []

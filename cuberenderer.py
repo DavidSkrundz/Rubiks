@@ -12,9 +12,9 @@ class CubeRenderer:
 	def __init__(self, x, y):
 		self.textPrinter = Printer()
 
-		self.rotateX = 0#-90 - 30
+		self.rotateX = 60
 		self.rotateY = 0
-		self.rotateZ = 0#45 + 90 + 90
+		self.rotateZ = -30
 
 		self.deltaRotateX = 45
 		self.deltaRotateZ = 40

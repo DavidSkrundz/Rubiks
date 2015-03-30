@@ -4,6 +4,8 @@ New New Cube
 from cubie import Cubie
 from random import randint
 from helpers import Point
+import cubemoverenderer
+import button
 
 W = Cubie.White
 R = Cubie.Red
@@ -19,7 +21,7 @@ class Cube:
 	"""
 	Top = 1
 	Bottom = 2
-	Left = 3
+	Left = -3
 	Right = 4
 	Front = 5
 	Middle = 6
@@ -27,7 +29,7 @@ class Cube:
 
 	Top_ = -1
 	Bottom_ = -2
-	Left_ = -3
+	Left_ = 3
 	Right_ = -4
 	Front_ = -5
 	Middle_ = -6
@@ -67,6 +69,8 @@ class Cube:
 				Cube.TurnUUU_:Cube.UUU_
 			}
 
+		self.moveQueue = []
+
 		self.N = N
 		# Create the cubies for a N-Cube
 		#
@@ -97,7 +101,37 @@ class Cube:
 					else:
 						self.cubies[z][y].append(None)
 
+	def generateButtons(self, x, y):
+		w = cubemoverenderer.CubeMoveRenderer.size(self.N)
+		num = int(self.N / 2)
 
+		buttons = []
+
+		for i in range(num):
+			buttons.append(button.MoveButton(x + w*i, y, self, Cube.Left_, i))
+			buttons.append(button.MoveButton(x + w*(self.N-1-i), y, self, Cube.Right, i))
+
+			buttons.append(button.MoveButton(x + w*i, y + w*(self.N-1), self, Cube.Left, i))
+			buttons.append(button.MoveButton(x + w*(self.N-1-i), y + w*(self.N-1), self, Cube.Right_, i))
+
+# 		if int((self.N + 1) / 2) == (self.N + 1) / 2:
+# 			buttons.append(button.MoveButton(x + w*num, y, self, Cube.Center, 0))
+
+		return buttons
+
+	def update(self):
+		doneUpdate = True
+		for zLayer in self.cubies:
+			for yLayer in zLayer:
+				for cubie in yLayer:
+					if not cubie is None:
+						if not cubie.update():
+							doneUpdate = False
+		if doneUpdate and len(self.moveQueue) > 0:
+			doneUpdate = False
+			move, offsets, animate = self.moveQueue.pop(0)
+			move(offsets, animate)
+		return doneUpdate
 
 
 
@@ -193,13 +227,6 @@ class Cube:
 			self.C()
 		elif operation == 13:
 			self.C_()
-
-	def update(self):
-		doneUpdate = True
-		for cubie in self.cubies:
-			if not cubie.update():
-				doneUpdate = False
-		return doneUpdate
 
 	def U_(self, animate=True):
 		tempCubie = self.cubies[0]

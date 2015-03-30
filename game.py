@@ -97,6 +97,7 @@ class Game(Runnable):
 
 	def reset(self):
 		self.__cube = Cube(3)
+		self.buttons = self.__cube.generateButtons(0, 0)
 # 		self.playing = False
 # 		self.__cubeTimer.reset()
 # # 		self.__historyRenderer = CubeHistoryRenderer(0, 183, 24, 300)
@@ -222,14 +223,14 @@ class Game(Runnable):
 # 				self.__cubeDoneUpdates = False
 
 	def render(self, screen):
-		CubeMoveRenderer.render(screen, 0, 0, 3, Cube.TurnUUU, 1)
-		CubeMoveRenderer.render(screen, 0, 50, 3, Cube.TurnRRR_, [0,1])
-		CubeMoveRenderer.render(screen, 50, 0, 3, Cube.Left, 0)
-		CubeMoveRenderer.render(screen, 100, 0, 3, Cube.Front, 0)
-		CubeMoveRenderer.render(screen, 50, 50, 4, Cube.Right_, [0, 1])
-		CubeMoveRenderer.render(screen, 200, 200, 7, Cube.Center, [0, 1])
+# 		CubeMoveRenderer.render(screen, 0, 0, 3, Cube.TurnUUU, 1)
+# 		CubeMoveRenderer.render(screen, 0, 50, 3, Cube.TurnRRR_, [0,1])
+# 		CubeMoveRenderer.render(screen, 50, 0, 3, Cube.Left, 0)
+# 		CubeMoveRenderer.render(screen, 100, 0, 3, Cube.Front, 0)
+# 		CubeMoveRenderer.render(screen, 50, 50, 4, Cube.Right_, [0, 1])
+# 		CubeMoveRenderer.render(screen, 200, 200, 7, Cube.Center, [0, 1])
 
 # 		self.__cubeTimer.render(screen, 100, 300)
 		self.__cubeRenderer.render(screen, self.__cube)
-# 		for button in self.buttons:
-# 			button.render(screen)
+		for button in self.buttons:
+			button.render(screen)

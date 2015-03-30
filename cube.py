@@ -20,19 +20,19 @@ class Cube:
 	A NxNxN Cube class
 	"""
 	Top = 1
-	Bottom = 2
+	Bottom = -2
 	Left = -3
 	Right = 4
 	Front = 5
-	Middle = 6
+	Middle = -6
 	Center = 7
 
 	Top_ = -1
-	Bottom_ = -2
+	Bottom_ = 2
 	Left_ = 3
 	Right_ = -4
 	Front_ = -5
-	Middle_ = -6
+	Middle_ = 6
 	Center_ = -7
 
 	TurnRRR = 11
@@ -108,14 +108,32 @@ class Cube:
 		buttons = []
 
 		for i in range(num):
-			buttons.append(button.MoveButton(x + w*i, y, self, Cube.Left_, i))
-			buttons.append(button.MoveButton(x + w*(self.N-1-i), y, self, Cube.Right, i))
+			# Upwards
+			buttons.append(button.MoveButton(x + w*(i+1), y, self, Cube.Left_, i))
+			buttons.append(button.MoveButton(x + w*(self.N-i), y, self, Cube.Right, i))
+			# Downwards
+			buttons.append(button.MoveButton(x + w*(i+1), y + w*(self.N+1), self, Cube.Left, i))
+			buttons.append(button.MoveButton(x + w*(self.N-i), y + w*(self.N+1), self, Cube.Right_, i))
+			# Leftwards
+			buttons.append(button.MoveButton(x, y + w*(i+1), self, Cube.Top, i))
+			buttons.append(button.MoveButton(x, y + w*(self.N-i), self, Cube.Bottom_, i))
+			# Rightwards
+			buttons.append(button.MoveButton(x + w*(self.N+1), y + w*(i+1), self, Cube.Top_, i))
+			buttons.append(button.MoveButton(x + w*(self.N+1), y + w*(self.N-i), self, Cube.Bottom, i))
 
-			buttons.append(button.MoveButton(x + w*i, y + w*(self.N-1), self, Cube.Left, i))
-			buttons.append(button.MoveButton(x + w*(self.N-1-i), y + w*(self.N-1), self, Cube.Right_, i))
+		if int(self.N / 2) != self.N / 2:
+			# Upwards
+			buttons.append(button.MoveButton(x + w*(num+1), y, self, Cube.Center, 0))
+			# Downwards
+			buttons.append(button.MoveButton(x + w*(num+1), y + w*(self.N+1), self, Cube.Center_, 0))
+			# Leftwards
+			buttons.append(button.MoveButton(x, y + w*(num+1), self, Cube.Middle_, i))
+			# Rightwards
+			buttons.append(button.MoveButton(x + w*(self.N+1), y + w*(num+1), self, Cube.Middle, i))
 
-# 		if int((self.N + 1) / 2) == (self.N + 1) / 2:
-# 			buttons.append(button.MoveButton(x + w*num, y, self, Cube.Center, 0))
+		# FrontFaceBoutons
+		buttons.append(button.MoveButton(x, y, self, Cube.Front_, 0))
+		buttons.append(button.MoveButton(x + w*(self.N+1), y, self, Cube.Front, 0))
 
 		return buttons
 

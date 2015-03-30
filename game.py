@@ -5,6 +5,7 @@ from cubetimer import CubeTimer
 from cuberenderer import CubeRenderer
 import pygame
 from pygame.mixer import Sound
+from pygame.event import Event
 from cubemoverenderer import CubeMoveRenderer
 
 handCursor = (
@@ -96,7 +97,7 @@ class Game(Runnable):
 		self.reset()
 
 	def reset(self):
-		self.__cube = Cube(3)
+		self.__cube = Cube(2)
 		self.buttons = self.__cube.generateButtons(0, 0)
 # 		self.playing = False
 # 		self.__cubeTimer.reset()
@@ -139,6 +140,7 @@ class Game(Runnable):
 	def click(self, x, y, button, press):
 		if not press:
 			self.RunningApplication.setCursor(handCursor, 5, 1)
+			self.mouseMove(Event(4, {'pos': (x, y), 'buttons': (0, 0, 0), 'rel': (0, 0)}))
 		self.__cubeRenderer.click(x, y, button, press)
 		if press:
 			for button in self.buttons:

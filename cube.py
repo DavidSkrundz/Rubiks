@@ -6,6 +6,7 @@ from random import randint
 from helpers import Point
 import cubemoverenderer
 import button
+from copy import deepcopy
 
 W = Cubie.White
 R = Cubie.Red
@@ -70,6 +71,7 @@ class Cube:
 			}
 
 		self.moveQueue = []
+		self.ready = False
 
 		self.N = N
 		# Create the cubies for a N-Cube
@@ -149,11 +151,8 @@ class Cube:
 			doneUpdate = False
 			move, offsets, animate = self.moveQueue.pop(0)
 			move(offsets, animate)
+		self.ready = doneUpdate
 		return doneUpdate
-
-
-
-
 
 	def isSolved(self):
 		frontColors = []
@@ -164,13 +163,17 @@ class Cube:
 		bottomColors = []
 
 		# Collect the colors
-		for cubie in self.cubies:
-			frontColors.append(cubie.frontColor())
-			backColors.append(cubie.backColor())
-			leftColors.append(cubie.leftColor())
-			rightColors.append(cubie.rightColor())
-			topColors.append(cubie.topColor())
-			bottomColors.append(cubie.bottomColor())
+		for zLayer in self.cubies:
+			for yLayer in zLayer:
+				for cubie in yLayer:
+					if cubie is None:
+						continue
+					frontColors.append(cubie.frontColor())
+					backColors.append(cubie.backColor())
+					leftColors.append(cubie.leftColor())
+					rightColors.append(cubie.rightColor())
+					topColors.append(cubie.topColor())
+					bottomColors.append(cubie.bottomColor())
 
 		# Check to make sure the cube is solved
 		activeColor = Cubie.Clear
@@ -246,41 +249,133 @@ class Cube:
 		elif operation == 13:
 			self.C_()
 
-	def U_(self, animate=True):
-		tempCubie = self.cubies[0]
-		self.cubies[0] = self.cubies[6]
-		self.cubies[6] = self.cubies[8]
-		self.cubies[8] = self.cubies[2]
-		self.cubies[2] = tempCubie
-		tempCubie = self.cubies[1]
-		self.cubies[1] = self.cubies[3]
-		self.cubies[3] = self.cubies[7]
-		self.cubies[7] = self.cubies[5]
-		self.cubies[5] = tempCubie
+	def U(self, offsets, animate=True):
+		self.moveQueue.append((self.__U, offsets, animate))
 
-		for i in [0,1,2,3,4,5,6,7,8]:
-			if animate:
-				self.cubies[i].rotateZ(-90, animate)
-			else:
-				self.cubies[i].rotateZ_(-90, animate)
+	def U_(self, offsets, animate=True):
+		self.moveQueue.append((self.__U_, offsets, animate))
 
-	def U(self, animate=True):
-		tempCubie = self.cubies[0]
-		self.cubies[0] = self.cubies[2]
-		self.cubies[2] = self.cubies[8]
-		self.cubies[8] = self.cubies[6]
-		self.cubies[6] = tempCubie
-		tempCubie = self.cubies[1]
-		self.cubies[1] = self.cubies[5]
-		self.cubies[5] = self.cubies[7]
-		self.cubies[7] = self.cubies[3]
-		self.cubies[3] = tempCubie
+	def D(self, offsets, animate=True):
+		self.moveQueue.append((self.__D, offsets, animate))
 
-		for i in [0,1,2,3,4,5,6,7,8]:
-			if animate:
-				self.cubies[i].rotateZ(90, animate)
-			else:
-				self.cubies[i].rotateZ_(90, animate)
+	def D_(self, offsets, animate=True):
+		self.moveQueue.append((self.__D_, offsets, animate))
+
+	def L(self, offsets, animate=True):
+		self.moveQueue.append((self.__L, offsets, animate))
+
+	def L_(self, offsets, animate=True):
+		self.moveQueue.append((self.__L_, offsets, animate))
+
+	def R(self, offsets, animate=True):
+		self.moveQueue.append((self.__R, offsets, animate))
+
+	def R_(self, offsets, animate=True):
+		self.moveQueue.append((self.__R_, offsets, animate))
+
+	def F(self, offsets, animate=True):
+		self.moveQueue.append((self.__F, offsets, animate))
+
+	def F_(self, offsets, animate=True):
+		self.moveQueue.append((self.__F_, offsets, animate))
+
+	def __U(self, offsets, animate=True):
+		try:
+			a = offsets[0]
+		except:
+			offsets = [offsets]
+		cubiesCopy = deepcopy(self.cubies)
+		for offset in offsets:
+			for y in range(self.N):
+				for x in range(self.N):
+					if not self.cubies[offset][y][x] is None:
+						self.cubies[offset][y][x] = cubiesCopy[offset][x][self.N-1-y]
+						if animate:
+							self.cubies[offset][y][x].rotateZ(-90, animate)
+						else:
+							self.cubies[offset][y][x].rotateZ_(-90, animate)
+
+	def __U_(self, offsets, animate=True):
+		try:
+			a = offsets[0]
+		except:
+			offsets = [offsets]
+		cubiesCopy = deepcopy(self.cubies)
+		for offset in offsets:
+			for y in range(self.N):
+				for x in range(self.N):
+					if not self.cubies[offset][y][x] is None:
+						self.cubies[offset][y][x] = cubiesCopy[offset][self.N-1-x][y]
+						if animate:
+							self.cubies[offset][y][x].rotateZ(90, animate)
+						else:
+							self.cubies[offset][y][x].rotateZ_(90, animate)
+
+	def __D(self, offsets, animate=True):
+		try:
+			a = offsets[0]
+		except:
+			offsets = [offsets]
+		cubiesCopy = deepcopy(self.cubies)
+		for offset in offsets:
+			for y in range(self.N):
+				for x in range(self.N):
+					if not self.cubies[self.N-1-offset][y][x] is None:
+						self.cubies[self.N-1-offset][y][x] = cubiesCopy[self.N-1-offset][self.N-1-x][y]
+						if animate:
+							self.cubies[self.N-1-offset][y][x].rotateZ(90, animate)
+						else:
+							self.cubies[self.N-1-offset][y][x].rotateZ_(90, animate)
+
+	def __D_(self, offsets, animate=True):
+		try:
+			a = offsets[0]
+		except:
+			offsets = [offsets]
+		cubiesCopy = deepcopy(self.cubies)
+		for offset in offsets:
+			for y in range(self.N):
+				for x in range(self.N):
+					if not self.cubies[self.N-1-offset][y][x] is None:
+						self.cubies[self.N-1-offset][y][x] = cubiesCopy[self.N-1-offset][x][self.N-1-y]
+						if animate:
+							self.cubies[self.N-1-offset][y][x].rotateZ(-90, animate)
+						else:
+							self.cubies[self.N-1-offset][y][x].rotateZ_(-90, animate)
+
+	def __L(self, offsets, animate=True):
+		try:
+			a = offsets[0]
+		except:
+			offsets = [offsets]
+		cubiesCopy = deepcopy(self.cubies)
+		for offset in offsets:
+			for z in range(self.N):
+				for y in range(self.N):
+					if not self.cubies[z][y][offset] is None:
+						self.cubies[z][y][offset] = cubiesCopy[y][self.N-1-z][offset]
+						if animate:
+							self.cubies[z][y][offset].rotateX(-90, animate)
+						else:
+							self.cubies[z][y][offset].rotateX_(-90, animate)
+
+	def __L_(self, offsets, animate=True):
+		try:
+			a = offsets[0]
+		except:
+			offsets = [offsets]
+		cubiesCopy = deepcopy(self.cubies)
+		for offset in offsets:
+			for z in range(self.N):
+				for y in range(self.N):
+					if not self.cubies[z][y][offset] is None:
+						self.cubies[z][y][offset] = cubiesCopy[y][self.N-1-z][offset]
+						if animate:
+							self.cubies[z][y][offset].rotateX(90, animate)
+						else:
+							self.cubies[z][y][offset].rotateX_(90, animate)
+
+
 
 	def F_(self, animate=True):
 		tempCubie = self.cubies[6]
@@ -353,78 +448,6 @@ class Cube:
 				self.cubies[i].rotateX(-90, animate)
 			else:
 				self.cubies[i].rotateX_(-90, animate)
-
-	def L_(self, animate=True):
-		tempCubie = self.cubies[8]
-		self.cubies[8] = self.cubies[19]
-		self.cubies[19] = self.cubies[25]
-		self.cubies[25] = self.cubies[2]
-		self.cubies[2] = tempCubie
-		tempCubie = self.cubies[5]
-		self.cubies[5] = self.cubies[11]
-		self.cubies[11] = self.cubies[22]
-		self.cubies[22] = self.cubies[13]
-		self.cubies[13] = tempCubie
-
-		for i in [2,5,8,11,13,19,22,25]:
-			if animate:
-				self.cubies[i].rotateX(-90, animate)
-			else:
-				self.cubies[i].rotateX_(-90, animate)
-
-	def L(self, animate=True):
-		tempCubie = self.cubies[8]
-		self.cubies[8] = self.cubies[2]
-		self.cubies[2] = self.cubies[25]
-		self.cubies[25] = self.cubies[19]
-		self.cubies[19] = tempCubie
-		tempCubie = self.cubies[5]
-		self.cubies[5] = self.cubies[13]
-		self.cubies[13] = self.cubies[22]
-		self.cubies[22] = self.cubies[11]
-		self.cubies[11] = tempCubie
-
-		for i in [2,5,8,11,13,19,22,25]:
-			if animate:
-				self.cubies[i].rotateX(90, animate)
-			else:
-				self.cubies[i].rotateX_(90, animate)
-
-	def D_(self, animate=True):
-		tempCubie = self.cubies[17]
-		self.cubies[17] = self.cubies[23]
-		self.cubies[23] = self.cubies[25]
-		self.cubies[25] = self.cubies[19]
-		self.cubies[19] = tempCubie
-		tempCubie = self.cubies[18]
-		self.cubies[18] = self.cubies[20]
-		self.cubies[20] = self.cubies[24]
-		self.cubies[24] = self.cubies[22]
-		self.cubies[22] = tempCubie
-
-		for i in [17,18,19,20,21,22,23,24,25]:
-			if animate:
-				self.cubies[i].rotateZ(90, animate)
-			else:
-				self.cubies[i].rotateZ_(90, animate)
-
-	def D(self, animate=True):
-		tempCubie = self.cubies[17]
-		self.cubies[17] = self.cubies[19]
-		self.cubies[19] = self.cubies[25]
-		self.cubies[25] = self.cubies[23]
-		self.cubies[23] = tempCubie
-		tempCubie = self.cubies[18]
-		self.cubies[18] = self.cubies[22]
-		self.cubies[22] = self.cubies[24]
-		self.cubies[24] = self.cubies[20]
-		self.cubies[20] = tempCubie
-
-		for i in [17,18,19,20,21,22,23,24,25]:
-			if animate:
-				self.cubies[i].rotateZ(-90, animate)
-			else:
-				self.cubies[i].rotateZ_(-90, animate)
 
 	def M_(self, animate=True):
 		tempCubie = self.cubies[9]

@@ -1,6 +1,7 @@
 import pygame
 from pygame import Color
 from cubemoverenderer import CubeMoveRenderer
+import cube
 
 class Button:
 	def __init__(self, rect, action):
@@ -8,9 +9,9 @@ class Button:
 		self.action = action
 		self.enabled = True
 
-	def activate(self):
+	def activate(self, arg=None):
 		if self.enabled:
-			self.action()
+			self.action(arg)
 
 	def render(self, screen):
 		pygame.draw.rect(screen, Color(40, 40, 40), self.rect, 0)
@@ -49,8 +50,27 @@ class MoveButton(Button):
 		self.offsets = offsets
 		self.cube = cube
 
-	def cubeAction(self):
-		pass
+	def cubeAction(self, arg=None):
+		if self.move == cube.Cube.Top:
+			cube.Cube.U(self.cube, self.offsets)
+		elif self.move == cube.Cube.Top_:
+			cube.Cube.U_(self.cube, self.offsets)
+		elif self.move == cube.Cube.Bottom:
+			cube.Cube.D(self.cube, self.offsets)
+		elif self.move == cube.Cube.Bottom_:
+			cube.Cube.D_(self.cube, self.offsets)
+		elif self.move == cube.Cube.Left:
+			cube.Cube.L(self.cube, self.offsets)
+		elif self.move == cube.Cube.Left_:
+			cube.Cube.L_(self.cube, self.offsets)
+		elif self.move == cube.Cube.Right:
+			cube.Cube.R(self.cube, self.offsets)
+		elif self.move == cube.Cube.Right_:
+			cube.Cube.R_(self.cube, self.offsets)
+		elif self.move == cube.Cube.Front:
+			cube.Cube.F(self.cube, self.offsets)
+		elif self.move == cube.Cube.Front_:
+			cube.Cube.F_(self.cube, self.offsets)
 
 	def render(self, screen):
 		CubeMoveRenderer.render(screen, self.rect[0], self.rect[1], self.cube.N, self.move, self.offsets)

@@ -71,48 +71,45 @@ class Game(Runnable):
 		self.RunningApplication = application
 		self.RunningApplication.setCursor(handCursor, 5, 1)
 
-		self.buttons = []
-		# Some buttons
-# 		self.buttons.append(TextButton((0, 0, 100, 60), "Reset", self.reset))
-# 		self.buttons.append(TextButton((0, 61, 100, 60), "Scramble", self.scramble))
-# 		self.buttons.append(TextButton((0, 122, 100, 60), "Solve", self.solve))
-
-# 		# Cube controls
-# 		buttonX = 120
-# 		buttonY = 50
-# 		buttonSize = 28
-# 		self.buttons.append(ImageButton((buttonX + 0*(buttonSize + 1), buttonY + 0*(buttonSize + 1), buttonSize, buttonSize), pygame.image.load("assets/3x3/U.png").convert(), lambda : self.__cube.U()))
-# 		self.buttons.append(ImageButton((buttonX + 2*(buttonSize + 1), buttonY + 0*(buttonSize + 1), buttonSize, buttonSize), pygame.image.load("assets/3x3/U_.png").convert(), lambda : self.__cube.U_()))
+		self.buttons = None
 
 		self.__cube = None
-# 		self.__cubeDoneUpdates = False
-# 		self.__cubeTimer = CubeTimer()
-		self.__cubeRenderer = CubeRenderer(350, 200)
-#
-# 		self.scrambleCounter = 26
-# 		self.maxScramble = 26
-# 		self.isPlaying = True
-# 		self.wasScrambled = False
-#
+		self.__cubeTimer = CubeTimer()
+		self.__cubeRenderer = None
+
+		self.scrambleCounter = None
+		self.maxScramble = None
+		self.wasScrambled = None
+
 		self.reset()
 
-	def reset(self):
-		self.__cube = Cube(2)
-		self.buttons = self.__cube.generateButtons(0, 0)
-# 		self.playing = False
-# 		self.__cubeTimer.reset()
-# # 		self.__historyRenderer = CubeHistoryRenderer(0, 183, 24, 300)
-#
-# 		self.wasScrambled = False
-# 		self.scrambleCounter = 26
-#
-# 		pygame.mixer.music.fadeout(1)
-#
-# 	def scramble(self):
-# 		self.reset()
-#
-# 		self.scrambleCounter = 0
-#
+	def reset(self, arg=None):
+		N = 3
+		self.__cube = Cube(N)
+		self.__cubeRenderer = CubeRenderer(350, 200)
+
+		self.buttons = []
+		self.buttons.append(TextButton((0, 0, 100, 60), "Reset", self.reset))
+# 		self.buttons.append(TextButton((0, 61, 100, 60), "Scramble", self.scramble))
+# 		self.buttons.append(TextButton((0, 122, 100, 60), "Solve", self.solve))
+		self.buttons += self.__cube.generateButtons(0, 100)
+
+		self.playing = True
+		self.isPlaying = False
+		self.didPlay = False
+		self.__cubeTimer.reset()
+# 		self.__historyRenderer = CubeHistoryRenderer(0, 183, 24, 300)
+
+		self.wasScrambled = False
+		self.maxScramble = 15*N
+		self.scrambleCounter = self.maxScramble
+
+		pygame.mixer.music.fadeout(1)
+
+	def scramble(self, arg=None):
+		self.reset()
+		self.scrambleCounter = 0
+
 	def scroll(self, up):
 		"""
 		1 for Up
@@ -146,26 +143,81 @@ class Game(Runnable):
 			for button in self.buttons:
 				if x > button.rect[0] and x < button.rect[0] + button.rect[2]:
 					if y > button.rect[1] and y < button.rect[1] + button.rect[3]:
-						if self.__cube.update():
-							button.activate()
+						button.activate()
 
 	def tick(self, keypressEvent):
-		return True
-# 		if self.scrambleCounter == self.maxScramble:
-# 			if self.__cube.update():
-# 				self.__cubeDoneUpdates = True
-# 				if self.__cube.isSolved() and self.playing:
-# 					self.playing = False
-# 					self.__cubeTimer.stop()
-# 					# Play the VICTORY SOUND!!!
-# 					winSound = Sound(file = "assets/audio/WIN.wav")
-# 					winSound.play()
-# 					pygame.mixer.music.fadeout(1)
-# 		else:
-# 			self.__cubeDoneUpdates = False
-# 			if self.__cube.update():
-# 				self.__cube.randomize()
-# 				self.scrambleCounter += 1
+		if self.scrambleCounter == self.maxScramble:
+			# The user may have control over the cube
+			if self.isPlaying:
+				# The user has control over the cube
+				if self.playing:
+					if self.__cube.isSolved() and self.didPlay and self.__cube.ready:
+						self.playing = False
+						self.__cubeTimer.stop()
+						# Play the VICTORY SOUND!!!
+						winSound = Sound(file = "assets/audio/WIN.wav")
+						winSound.play()
+						pygame.mixer.music.fadeout(1)
+					else:
+						# Handle user input
+						if keypressEvent:
+							keyCode = keypressEvent.key
+							rotateFunction = None
+							if keyCode == pygame.K_q:
+								rotateFunction = self.__cube.U
+							elif keyCode == pygame.K_e:
+								rotateFunction = self.__cube.U_
+							elif keyCode == pygame.K_c:
+								rotateFunction = self.__cube.D
+							elif keyCode == pygame.K_z:
+								rotateFunction = self.__cube.D_
+							elif keyCode == pygame.K_h:
+								rotateFunction = self.__cube.F
+							elif keyCode == pygame.K_s:
+								rotateFunction = self.__cube.F_
+							elif keyCode == pygame.K_b:
+								rotateFunction = self.__cube.L
+							elif keyCode == pygame.K_t:
+								rotateFunction = self.__cube.L_
+							elif keyCode == pygame.K_u:
+								rotateFunction = self.__cube.R
+							elif keyCode == pygame.K_m:
+								rotateFunction = self.__cube.R_
+							elif keyCode == pygame.K_w:
+								rotateFunction = self.__cube.C
+							elif keyCode == pygame.K_x:
+								rotateFunction = self.__cube.C_
+							elif keyCode == pygame.K_d:
+								rotateFunction = self.__cube.M
+							elif keyCode == pygame.K_a:
+								rotateFunction = self.__cube.M_
+							elif keyCode == pygame.K_j:
+								self.__cube.UUU()
+							elif keyCode == pygame.K_g:
+								self.__cube.UUU_()
+							elif keyCode == pygame.K_y:
+								self.__cube.RRR()
+							elif keyCode == pygame.K_n:
+								self.__cube.RRR_()
+							if rotateFunction != None:
+								rotateFunction(0)
+						if not self.__cube.update():
+							self.didPlay = True
+				else:
+					# The User does not have control over the cube
+					pass
+			else:
+				if self.__cube.update():
+					# The animation of scrambling is done
+					self.isPlaying = True
+		else:
+			# Scramble
+			self.__cube.randomize()
+			self.scrambleCounter += 1
+			self.wasScrambled = True
+			self.isPlaying = False
+
+
 
 # 				# Handle the keypress event if it exists
 # 				if keypressEvent:
@@ -175,64 +227,10 @@ class Game(Runnable):
 # 						rotateFunction = self.__cube.U
 # 					elif keyCode == pygame.K_e:
 # 						rotateFunction = self.__cube.U_
-# 					elif keyCode == pygame.K_c:
-# 						rotateFunction = self.__cube.D
-# 					elif keyCode == pygame.K_z:
-# 						rotateFunction = self.__cube.D_
-# 					elif keyCode == pygame.K_h:
-# 						rotateFunction = self.__cube.F
-# 					elif keyCode == pygame.K_s:
-# 						rotateFunction = self.__cube.F_
-# # 					elif keyCode == pygame.K_r:
-# # 						rotateFunction = self.__cube.B
-# # 					elif keyCode == pygame.K_v:
-# # 						rotateFunction = self.__cube.B_
-# 					elif keyCode == pygame.K_b:
-# 						rotateFunction = self.__cube.L
-# 					elif keyCode == pygame.K_t:
-# 						rotateFunction = self.__cube.L_
-# 					elif keyCode == pygame.K_u:
-# 						rotateFunction = self.__cube.R
-# 					elif keyCode == pygame.K_m:
-# 						rotateFunction = self.__cube.R_
-# 					elif keyCode == pygame.K_w:
-# 						rotateFunction = self.__cube.C
-# 					elif keyCode == pygame.K_x:
-# 						rotateFunction = self.__cube.C_
-# 					elif keyCode == pygame.K_d:
-# 						rotateFunction = self.__cube.M
-# 					elif keyCode == pygame.K_a:
-# 						rotateFunction = self.__cube.M_
-# 					elif keyCode == pygame.K_j:
-# 						self.__cube.UUU()
-# 					elif keyCode == pygame.K_g:
-# 						self.__cube.UUU_()
-# 					elif keyCode == pygame.K_y:
-# 						self.__cube.RRR()
-# 					elif keyCode == pygame.K_n:
-# 						self.__cube.RRR_()
 
-# 					if rotateFunction != None:
-# 						self.__cubeDoneUpdates = False
-# 						if not self.playing:
-# 							self.playing = True
-# 							self.__cubeTimer.reset()
-# 							self.__cubeTimer.start()
-# 							pygame.mixer.music.load("assets/audio/BGM.wav")
-# 							pygame.mixer.music.play(loops=-1)
-# 						rotateFunction()
-# 			else:
-# 				self.__cubeDoneUpdates = False
 
 	def render(self, screen):
-# 		CubeMoveRenderer.render(screen, 0, 0, 3, Cube.TurnUUU, 1)
-# 		CubeMoveRenderer.render(screen, 0, 50, 3, Cube.TurnRRR_, [0,1])
-# 		CubeMoveRenderer.render(screen, 50, 0, 3, Cube.Left, 0)
-# 		CubeMoveRenderer.render(screen, 100, 0, 3, Cube.Front, 0)
-# 		CubeMoveRenderer.render(screen, 50, 50, 4, Cube.Right_, [0, 1])
-# 		CubeMoveRenderer.render(screen, 200, 200, 7, Cube.Center, [0, 1])
-
-# 		self.__cubeTimer.render(screen, 100, 300)
 		self.__cubeRenderer.render(screen, self.__cube)
+		self.__cubeTimer.render(screen, 100, 300)
 		for button in self.buttons:
 			button.render(screen)

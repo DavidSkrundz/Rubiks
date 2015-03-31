@@ -85,6 +85,8 @@ class CubeRenderer:
 
 		pygame.draw.rect(screen, Color(40, 40, 40), (self.newX, self.newY, self.newW, self.newH), 0)
 
+		self.viewer_distance = 5*cube.N
+
 		t = [] # Transformed vertices
 		f = [] # Converted faces
 		c = [] # Colors

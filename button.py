@@ -71,6 +71,14 @@ class MoveButton(Button):
 			cube.Cube.F(self.cube, self.offsets)
 		elif self.move == cube.Cube.Front_:
 			cube.Cube.F_(self.cube, self.offsets)
+		elif self.move == cube.Cube.Middle:
+			cube.Cube.M(self.cube, self.offsets)
+		elif self.move == cube.Cube.Middle_:
+			cube.Cube.M_(self.cube, self.offsets)
+		elif self.move == cube.Cube.Center:
+			cube.Cube.C(self.cube, self.offsets)
+		elif self.move == cube.Cube.Center_:
+			cube.Cube.C_(self.cube, self.offsets)
 
 	def render(self, screen):
 		CubeMoveRenderer.render(screen, self.rect[0], self.rect[1], self.cube.N, self.move, self.offsets)

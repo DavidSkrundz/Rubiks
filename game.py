@@ -84,7 +84,7 @@ class Game(Runnable):
 		self.reset()
 
 	def reset(self, arg=None):
-		N = 3
+		N = 5
 		self.__cube = Cube(N)
 		self.__cubeRenderer = CubeRenderer(350, 200)
 

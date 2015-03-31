@@ -87,7 +87,7 @@ class CubeMoveRenderer:
 					for i in offSets:
 						newOffSets.append(int(N / 2) - i)
 						newOffSets.append(int(N / 2) + i)
-				offSets = newOffSets
+				offSets = set(newOffSets)
 			for j in offSets:
 				i = j
 				if move == Cube.Right or move == Cube.Right_:
@@ -130,7 +130,7 @@ class CubeMoveRenderer:
 					for i in offSets:
 						newOffSets.append(int(N / 2) - i)
 						newOffSets.append(int(N / 2) + i)
-				offSets = newOffSets
+				offSets = set(newOffSets)
 			for j in offSets:
 				i = j
 				if move == Cube.Bottom or move == Cube.Bottom_:

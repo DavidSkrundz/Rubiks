@@ -62,27 +62,6 @@ class CubeRenderer:
 		return False
 
 	def render(self, screen, cube):
-# 		if self.deltaRotateX > 90:
-# 			self.deltaRotateX -= 90
-# 			self.rotateZ -= 90
-# 			cube.UUU_(False)
-# 		if self.deltaRotateX < 0:
-# 			self.deltaRotateX += 90
-# 			self.rotateZ += 90
-# # 			cube.UUU(False)
-#
-# 		if self.deltaRotateZ > 90:
-# 			if self.deltaRotateX < 10:
-# 				self.deltaRotateZ -= 90
-# 				self.rotateX -= 90
-# 				cube.RRR(False)
-#
-# 		if self.deltaRotateZ < 0:
-# 			if self.deltaRotateX < 10:
-# 				self.deltaRotateZ += 90
-# 				self.rotateX += 90
-# 				cube.RRR_(False)
-
 		pygame.draw.rect(screen, Color(40, 40, 40), (self.newX, self.newY, self.newW, self.newH), 0)
 
 		self.viewer_distance = 5*cube.N
@@ -130,3 +109,22 @@ class CubeRenderer:
 			if c[faceIndex] != Cubie.Clear:
 				pygame.draw.polygon(screen, c[faceIndex], points)
 				pygame.draw.lines(screen, Cubie.Black, True, points)
+
+		if self.deltaRotateX > 90:
+			self.deltaRotateX -= 90
+			self.rotateZ += 90
+			cube.UUU(False)
+		if self.deltaRotateX < 0:
+			self.deltaRotateX += 90
+			self.rotateZ -= 90
+			cube.UUU_(False)
+		if self.deltaRotateZ > 90:
+			if self.deltaRotateX < 10:
+				self.deltaRotateZ -= 90
+				self.rotateX -= 90
+				cube.RRR(False)
+		if self.deltaRotateZ < 0:
+			if self.deltaRotateX < 10:
+				self.deltaRotateZ += 90
+				self.rotateX += 90
+				cube.RRR_(False)

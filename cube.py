@@ -291,6 +291,18 @@ class Cube:
 	def C_(self, offsets, animate=True):
 		self.moveQueue.append((self.__C_, offsets, animate))
 
+	def UUU(self, animate=True):
+		self.moveQueue.append((self.__UUU, 0, animate))
+
+	def UUU_(self, animate=True):
+		self.moveQueue.append((self.__UUU_, 0, animate))
+
+	def RRR(self, animate=True):
+		self.moveQueue.append((self.__RRR, 0, animate))
+
+	def RRR_(self, animate=True):
+		self.moveQueue.append((self.__RRR_, 0, animate))
+
 	def __U(self, offsets, animate=True):
 		try:
 			a = offsets[0]
@@ -302,10 +314,7 @@ class Cube:
 				for x in range(self.N):
 					if not self.cubies[offset][y][x] is None:
 						self.cubies[offset][y][x] = cubiesCopy[offset][x][self.N-1-y]
-						if animate:
-							self.cubies[offset][y][x].rotateZ(-90, animate)
-						else:
-							self.cubies[offset][y][x].rotateZ_(-90, animate)
+						self.cubies[offset][y][x].rotateZ(-90, animate)
 
 	def __U_(self, offsets, animate=True):
 		try:
@@ -318,10 +327,7 @@ class Cube:
 				for x in range(self.N):
 					if not self.cubies[offset][y][x] is None:
 						self.cubies[offset][y][x] = cubiesCopy[offset][self.N-1-x][y]
-						if animate:
-							self.cubies[offset][y][x].rotateZ(90, animate)
-						else:
-							self.cubies[offset][y][x].rotateZ_(90, animate)
+						self.cubies[offset][y][x].rotateZ(90, animate)
 
 	def __D(self, offsets, animate=True):
 		try:
@@ -334,10 +340,7 @@ class Cube:
 				for x in range(self.N):
 					if not self.cubies[self.N-1-offset][y][x] is None:
 						self.cubies[self.N-1-offset][y][x] = cubiesCopy[self.N-1-offset][self.N-1-x][y]
-						if animate:
-							self.cubies[self.N-1-offset][y][x].rotateZ(90, animate)
-						else:
-							self.cubies[self.N-1-offset][y][x].rotateZ_(90, animate)
+						self.cubies[self.N-1-offset][y][x].rotateZ(90, animate)
 
 	def __D_(self, offsets, animate=True):
 		try:
@@ -350,10 +353,7 @@ class Cube:
 				for x in range(self.N):
 					if not self.cubies[self.N-1-offset][y][x] is None:
 						self.cubies[self.N-1-offset][y][x] = cubiesCopy[self.N-1-offset][x][self.N-1-y]
-						if animate:
-							self.cubies[self.N-1-offset][y][x].rotateZ(-90, animate)
-						else:
-							self.cubies[self.N-1-offset][y][x].rotateZ_(-90, animate)
+						self.cubies[self.N-1-offset][y][x].rotateZ(-90, animate)
 
 	def __L(self, offsets, animate=True):
 		try:
@@ -366,10 +366,7 @@ class Cube:
 				for y in range(self.N):
 					if not self.cubies[z][y][offset] is None:
 						self.cubies[z][y][offset] = cubiesCopy[y][self.N-1-z][offset]
-						if animate:
-							self.cubies[z][y][offset].rotateX(-90, animate)
-						else:
-							self.cubies[z][y][offset].rotateX_(-90, animate)
+						self.cubies[z][y][offset].rotateX(-90, animate)
 
 	def __L_(self, offsets, animate=True):
 		try:
@@ -382,10 +379,7 @@ class Cube:
 				for y in range(self.N):
 					if not self.cubies[z][y][offset] is None:
 						self.cubies[z][y][offset] = cubiesCopy[self.N-1-y][z][offset]
-						if animate:
-							self.cubies[z][y][offset].rotateX(90, animate)
-						else:
-							self.cubies[z][y][offset].rotateX_(90, animate)
+						self.cubies[z][y][offset].rotateX(90, animate)
 
 	def __R(self, offsets, animate=True):
 		try:
@@ -398,10 +392,7 @@ class Cube:
 				for y in range(self.N):
 					if not self.cubies[z][y][self.N-1-offset] is None:
 						self.cubies[z][y][self.N-1-offset] = cubiesCopy[self.N-1-y][z][self.N-1-offset]
-						if animate:
-							self.cubies[z][y][self.N-1-offset].rotateX(90, animate)
-						else:
-							self.cubies[z][y][self.N-1-offset].rotateX_(90, animate)
+						self.cubies[z][y][self.N-1-offset].rotateX(90, animate)
 
 	def __R_(self, offsets, animate=True):
 		try:
@@ -414,10 +405,7 @@ class Cube:
 				for y in range(self.N):
 					if not self.cubies[z][y][self.N-1-offset] is None:
 						self.cubies[z][y][self.N-1-offset] = cubiesCopy[y][self.N-1-z][self.N-1-offset]
-						if animate:
-							self.cubies[z][y][self.N-1-offset].rotateX(-90, animate)
-						else:
-							self.cubies[z][y][self.N-1-offset].rotateX_(-90, animate)
+						self.cubies[z][y][self.N-1-offset].rotateX(-90, animate)
 
 	def __F(self, offsets, animate=True):
 		try:
@@ -430,10 +418,7 @@ class Cube:
 				for x in range(self.N):
 					if not self.cubies[z][offset][x] is None:
 						self.cubies[z][offset][x] = cubiesCopy[self.N-1-x][offset][z]
-						if animate:
-							self.cubies[z][offset][x].rotateY(-90, animate)
-						else:
-							self.cubies[z][offset][x].rotateY_(-90, animate)
+						self.cubies[z][offset][x].rotateY(-90, animate)
 
 	def __F_(self, offsets, animate=True):
 		try:
@@ -446,10 +431,7 @@ class Cube:
 				for x in range(self.N):
 					if not self.cubies[z][offset][x] is None:
 						self.cubies[z][offset][x] = cubiesCopy[x][offset][self.N-1-z]
-						if animate:
-							self.cubies[z][offset][x].rotateY(90, animate)
-						else:
-							self.cubies[z][offset][x].rotateY_(90, animate)
+						self.cubies[z][offset][x].rotateY(90, animate)
 
 	def __M(self, offsets, animate=True):
 		try:
@@ -472,30 +454,89 @@ class Cube:
 				for x in range(self.N):
 					if not self.cubies[self.N-1-offset][y][x] is None:
 						self.cubies[self.N-1-offset][y][x] = cubiesCopy[self.N-1-offset][self.N-1-x][y]
-						if animate:
-							self.cubies[self.N-1-offset][y][x].rotateZ(90, animate)
-						else:
-							self.cubies[self.N-1-offset][y][x].rotateZ_(90, animate)
+						self.cubies[self.N-1-offset][y][x].rotateZ(90, animate)
 
+	def __M_(self, offsets, animate=True):
+		try:
+			a = offsets[0]
+		except:
+			offsets = [offsets]
+		newOffSets = []
+		if self.N % 2 == 0:
+			for i in offsets:
+				newOffSets.append(int(self.N / 2) - 1 - i)
+				newOffSets.append(int(self.N / 2) + 0 + i)
+		else:
+			for i in offsets:
+				newOffSets.append(int(self.N / 2) - i)
+				newOffSets.append(int(self.N / 2) + i)
+		offsets = set(newOffSets)
+		cubiesCopy = deepcopy(self.cubies)
+		for offset in offsets:
+			for y in range(self.N):
+				for x in range(self.N):
+					if not self.cubies[self.N-1-offset][y][x] is None:
+						self.cubies[self.N-1-offset][y][x] = cubiesCopy[self.N-1-offset][x][self.N-1-y]
+						self.cubies[self.N-1-offset][y][x].rotateZ(-90, animate)
 
+	def __C(self, offsets, animate=True):
+		try:
+			a = offsets[0]
+		except:
+			offsets = [offsets]
+		newOffSets = []
+		if self.N % 2 == 0:
+			for i in offsets:
+				newOffSets.append(int(self.N / 2) - 1 - i)
+				newOffSets.append(int(self.N / 2) + 0 + i)
+		else:
+			for i in offsets:
+				newOffSets.append(int(self.N / 2) - i)
+				newOffSets.append(int(self.N / 2) + i)
+		offsets = set(newOffSets)
+		cubiesCopy = deepcopy(self.cubies)
+		for offset in offsets:
+			for z in range(self.N):
+				for y in range(self.N):
+					if not self.cubies[z][y][self.N-1-offset] is None:
+						self.cubies[z][y][self.N-1-offset] = cubiesCopy[self.N-1-y][z][self.N-1-offset]
+						self.cubies[z][y][self.N-1-offset].rotateX(90, animate)
 
+	def __C_(self, offsets, animate=True):
+		try:
+			a = offsets[0]
+		except:
+			offsets = [offsets]
+		newOffSets = []
+		if self.N % 2 == 0:
+			for i in offsets:
+				newOffSets.append(int(self.N / 2) - 1 - i)
+				newOffSets.append(int(self.N / 2) + 0 + i)
+		else:
+			for i in offsets:
+				newOffSets.append(int(self.N / 2) - i)
+				newOffSets.append(int(self.N / 2) + i)
+		offsets = set(newOffSets)
+		cubiesCopy = deepcopy(self.cubies)
+		for offset in offsets:
+			for z in range(self.N):
+				for y in range(self.N):
+					if not self.cubies[z][y][self.N-1-offset] is None:
+						self.cubies[z][y][self.N-1-offset] = cubiesCopy[y][self.N-1-z][self.N-1-offset]
+						self.cubies[z][y][self.N-1-offset].rotateX(-90, animate)
 
-	def UUU(self, animate=True):
-		self.U_(animate)
-		self.M(animate)
-		self.D(animate)
+	def __UUU(self, offsets, animate=True):
+		offsets = [i for i in range(self.N)]
+		self.__U(offsets, animate)
 
-	def UUU_(self, animate=True):
-		self.U(animate)
-		self.M_(animate)
-		self.D_(animate)
+	def __UUU_(self, offsets, animate=True):
+		offsets = [i for i in range(self.N)]
+		self.__U_(offsets, animate)
 
-	def RRR(self, animate=True):
-		self.R(animate)
-		self.C(animate)
-		self.L_(animate)
+	def __RRR(self, offsets, animate=True):
+		offsets = [i for i in range(self.N)]
+		self.__R(offsets, animate)
 
-	def RRR_(self, animate=True):
-		self.R_(animate)
-		self.C_(animate)
-		self.L(animate)
+	def __RRR_(self, offsets, animate=True):
+		offsets = [i for i in range(self.N)]
+		self.__R_(offsets, animate)

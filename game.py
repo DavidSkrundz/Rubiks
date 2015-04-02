@@ -97,6 +97,7 @@ class Game(Runnable):
 		self.playing = True
 		self.isPlaying = False
 		self.didPlay = False
+		self.wasNotSolved = False
 		self.__cubeTimer.reset()
 # 		self.__historyRenderer = CubeHistoryRenderer(0, 183, 24, 300)
 
@@ -149,9 +150,12 @@ class Game(Runnable):
 		if self.scrambleCounter == self.maxScramble:
 			# The user may have control over the cube
 			if self.isPlaying:
+				self.__cube.update()
 				# The user has control over the cube
 				if self.playing:
-					if self.__cube.isSolved() and self.didPlay and self.__cube.ready:
+					if not self.__cube.isSolved():
+						self.wasNotSolved = True
+					if self.__cube.isSolved() and self.__cube.ready and self.wasNotSolved:
 						self.playing = False
 						self.__cubeTimer.stop()
 						# Play the VICTORY SOUND!!!
@@ -192,17 +196,15 @@ class Game(Runnable):
 							elif keyCode == pygame.K_a:
 								rotateFunction = self.__cube.M_
 							elif keyCode == pygame.K_j:
-								self.__cube.UUU()
-							elif keyCode == pygame.K_g:
 								self.__cube.UUU_()
+							elif keyCode == pygame.K_g:
+								self.__cube.UUU()
 							elif keyCode == pygame.K_y:
 								self.__cube.RRR()
 							elif keyCode == pygame.K_n:
 								self.__cube.RRR_()
 							if rotateFunction != None:
 								rotateFunction(0)
-						if not self.__cube.update():
-							self.didPlay = True
 				else:
 					# The User does not have control over the cube
 					pass
@@ -231,6 +233,6 @@ class Game(Runnable):
 
 	def render(self, screen):
 		self.__cubeRenderer.render(screen, self.__cube)
-		self.__cubeTimer.render(screen, 100, 300)
+		self.__cubeTimer.render(screen, 300, 300)
 		for button in self.buttons:
 			button.render(screen)

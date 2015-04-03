@@ -7,6 +7,9 @@ from helpers import Point
 import cubemoverenderer
 import button
 from copy import deepcopy
+from cubetimer import CubeTimer
+import pygame
+from pygame.mixer import Sound
 
 W = Cubie.White
 R = Cubie.Red
@@ -72,6 +75,12 @@ class Cube:
 
 		self.moveQueue = []
 		self.ready = False
+
+		self.moveHistory = []
+
+		self.wasUnsolved = False
+
+		self.cubeTimer = CubeTimer()
 
 		self.N = N
 		# Create the cubies for a N-Cube
@@ -152,6 +161,18 @@ class Cube:
 			move, offsets, animate = self.moveQueue.pop(0)
 			move(offsets, animate)
 		self.ready = doneUpdate
+
+		if self.isSolved():
+			if self.wasUnsolved:
+				self.wasUnsolved = False
+				self.cubeTimer.endTime = pygame.time.get_ticks()
+				# Play the VICTORY SOUND!!!
+				winSound = Sound(file = "assets/audio/WIN.wav")
+				winSound.play()
+				pygame.mixer.music.fadeout(1)
+		else:
+			self.wasUnsolved = True
+
 		return doneUpdate
 
 	def isSolved(self):
@@ -220,88 +241,142 @@ class Cube:
 		Randomly applies a single move to the cube
 		"""
 		operation = randint(0,13)
+		offset = randint(0, self.N-1)
 		if operation == 0:
-			self.U()
+			self.U(offset, True, False)
 		elif operation == 1:
-			self.U_()
+			self.U_(offset, True, False)
 		elif operation == 2:
-			self.D()
+			self.D(offset, True, False)
 		elif operation == 3:
-			self.D_()
+			self.D_(offset, True, False)
 		elif operation == 4:
-			self.L()
+			self.L(offset, True, False)
 		elif operation == 5:
-			self.L_()
+			self.L_(offset, True, False)
 		elif operation == 6:
-			self.R()
+			self.R(offset, True, False)
 		elif operation == 7:
-			self.R_()
+			self.R_(offset, True, False)
 		elif operation == 8:
-			self.F()
+			self.F(offset, True, False)
 		elif operation == 9:
-			self.F_()
+			self.F_(offset, True, False)
 		elif operation == 10:
-			self.M()
+			self.M(int(offset / 2), True, False)
 		elif operation == 11:
-			self.M_()
+			self.M_(int(offset / 2), True, False)
 		elif operation == 12:
-			self.C()
+			self.C(int(offset / 2), True, False)
 		elif operation == 13:
-			self.C_()
+			self.C_(int(offset / 2), True, False)
 
-	def U(self, offsets, animate=True):
+	def performMove(self, moveData):
+		self.moveHistory.append(moveData)
+
+		if self.cubeTimer.endTime:
+			if not self.isSolved():
+				self.moveHistory = []
+				self.cubeTimer.startTime = None
+				self.cubeTimer.endTime = None
+
+		# If its the first move start the timer
+		if len(self.moveHistory) == 1:
+			self.cubeTimer.startTime = pygame.time.get_ticks()
+			self.cubeTimer.endTime = None
+
+			pygame.mixer.music.load("assets/audio/BGM.wav")
+			pygame.mixer.music.play(loops=-1)
+
+	def U(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__U, offsets, animate))
+		if timed:
+			self.performMove((self.Top, offsets))
 
-	def U_(self, offsets, animate=True):
+	def U_(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__U_, offsets, animate))
+		if timed:
+			self.performMove((self.Top_, offsets))
 
-	def D(self, offsets, animate=True):
+	def D(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__D, offsets, animate))
+		if timed:
+			self.performMove((self.Bottom, offsets))
 
-	def D_(self, offsets, animate=True):
+	def D_(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__D_, offsets, animate))
+		if timed:
+			self.performMove((self.Bottom_, offsets))
 
-	def L(self, offsets, animate=True):
+	def L(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__L, offsets, animate))
+		if timed:
+			self.performMove((self.Left, offsets))
 
-	def L_(self, offsets, animate=True):
+	def L_(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__L_, offsets, animate))
+		if timed:
+			self.performMove((self.Left_, offsets))
 
-	def R(self, offsets, animate=True):
+	def R(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__R, offsets, animate))
+		if timed:
+			self.performMove((self.Right, offsets))
 
-	def R_(self, offsets, animate=True):
+	def R_(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__R_, offsets, animate))
+		if timed:
+			self.performMove((self.Right_, offsets))
 
-	def F(self, offsets, animate=True):
+	def F(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__F, offsets, animate))
+		if timed:
+			self.performMove((self.Front, offsets))
 
-	def F_(self, offsets, animate=True):
+	def F_(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__F_, offsets, animate))
+		if timed:
+			self.performMove((self.Front_, offsets))
 
-	def M(self, offsets, animate=True):
+	def M(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__M, offsets, animate))
+		if timed:
+			self.performMove((self.Middle, offsets))
 
-	def M_(self, offsets, animate=True):
+	def M_(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__M_, offsets, animate))
+		if timed:
+			self.performMove((self.Middle_, offsets))
 
-	def C(self, offsets, animate=True):
+	def C(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__C, offsets, animate))
+		if timed:
+			self.performMove((self.Center, offsets))
 
-	def C_(self, offsets, animate=True):
+	def C_(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__C_, offsets, animate))
+		if timed:
+			self.performMove((self.Center_, offsets))
 
-	def UUU(self, animate=True):
+	def UUU(self, animate=True, timed=True):
 		self.moveQueue.append((self.__UUU, 0, animate))
+		if timed:
+			self.performMove((self.TurnUUU, 0))
 
-	def UUU_(self, animate=True):
+	def UUU_(self, animate=True, timed=True):
 		self.moveQueue.append((self.__UUU_, 0, animate))
+		if timed:
+			self.performMove((self.TurnUUU_, 0))
 
-	def RRR(self, animate=True):
+	def RRR(self, animate=True, timed=True):
 		self.moveQueue.append((self.__RRR, 0, animate))
+		if timed:
+			self.performMove((self.TurnRRR, 0))
 
-	def RRR_(self, animate=True):
+	def RRR_(self, animate=True, timed=True):
 		self.moveQueue.append((self.__RRR_, 0, animate))
+		if timed:
+			self.performMove((self.TurnRRR_, 0))
 
 	def __U(self, offsets, animate=True):
 		try:

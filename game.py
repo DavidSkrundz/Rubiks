@@ -1,7 +1,6 @@
 from button import TextButton, ImageButton
 from cube import Cube
 from runnable import Runnable
-from cubetimer import CubeTimer
 from cuberenderer import CubeRenderer
 import pygame
 from pygame.mixer import Sound
@@ -74,7 +73,6 @@ class Game(Runnable):
 		self.buttons = None
 
 		self.__cube = None
-		self.__cubeTimer = CubeTimer()
 		self.__cubeRenderer = None
 
 		self.scrambleCounter = None
@@ -84,21 +82,22 @@ class Game(Runnable):
 		self.reset()
 
 	def reset(self, arg=None):
-		N = 5
+		N = 3
 		self.__cube = Cube(N)
 		self.__cubeRenderer = CubeRenderer(350, 200)
 
 		self.buttons = []
 		self.buttons.append(TextButton((0, 0, 100, 60), "Reset", self.reset))
-# 		self.buttons.append(TextButton((0, 61, 100, 60), "Scramble", self.scramble))
+		self.buttons.append(TextButton((0, 61, 100, 60), "Scramble", self.scramble))
 # 		self.buttons.append(TextButton((0, 122, 100, 60), "Solve", self.solve))
-		self.buttons += self.__cube.generateButtons(0, 100)
+		self.buttons += self.__cube.generateButtons(0, 200)
+
+		self.music = False
 
 		self.playing = True
 		self.isPlaying = False
 		self.didPlay = False
 		self.wasNotSolved = False
-		self.__cubeTimer.reset()
 # 		self.__historyRenderer = CubeHistoryRenderer(0, 183, 24, 300)
 
 		self.wasScrambled = False
@@ -157,11 +156,11 @@ class Game(Runnable):
 						self.wasNotSolved = True
 					if self.__cube.isSolved() and self.__cube.ready and self.wasNotSolved:
 						self.playing = False
-						self.__cubeTimer.stop()
-						# Play the VICTORY SOUND!!!
-						winSound = Sound(file = "assets/audio/WIN.wav")
-						winSound.play()
-						pygame.mixer.music.fadeout(1)
+# 						# Play the VICTORY SOUND!!!
+# 						winSound = Sound(file = "assets/audio/WIN.wav")
+# 						winSound.play()
+# 						pygame.mixer.music.fadeout(1)
+# 						self.music = False
 					else:
 						# Handle user input
 						if keypressEvent:
@@ -204,6 +203,10 @@ class Game(Runnable):
 							elif keyCode == pygame.K_n:
 								self.__cube.RRR_()
 							if rotateFunction != None:
+								if not self.music:
+									self.music = True
+# 									pygame.mixer.music.load("assets/audio/BGM.wav")
+# 									pygame.mixer.music.play(loops=-1)
 								rotateFunction(0)
 				else:
 					# The User does not have control over the cube
@@ -214,8 +217,9 @@ class Game(Runnable):
 					self.isPlaying = True
 		else:
 			# Scramble
-			self.__cube.randomize()
-			self.scrambleCounter += 1
+			while self.scrambleCounter < self.maxScramble:
+				self.__cube.randomize()
+				self.scrambleCounter += 1
 			self.wasScrambled = True
 			self.isPlaying = False
 
@@ -233,6 +237,6 @@ class Game(Runnable):
 
 	def render(self, screen):
 		self.__cubeRenderer.render(screen, self.__cube)
-		self.__cubeTimer.render(screen, 300, 300)
+		self.__cube.cubeTimer.render(screen, 300, 300)
 		for button in self.buttons:
 			button.render(screen)

@@ -13,6 +13,12 @@ class SearchSolver(CubeSolver):
         self.currentAlgorithmSteps = []
         self.currentCube = None
 
+    def update(self):
+        self.FirstLayer()
+        self.SecondLayer()
+        self.FinalLayer()
+        CubeSolver.update(self)
+
 
     def FirstLayer(self):
         '''
@@ -37,7 +43,6 @@ class SearchSolver(CubeSolver):
                 self.currentAlgorithmSteps += [Cube.Center, Cube.Center]
             else:
                 raise ValueError("Unsolvable cube")
-        CubeSolver.update(self)
 
 
     def SecondLayer(self):

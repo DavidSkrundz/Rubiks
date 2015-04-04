@@ -103,8 +103,8 @@ class Game(Runnable):
 		self.__cube.endTime = None
 
 # 		self.__cubeSolver = CubeSolverOptimal()
-		self.__cubeSolver = CubeSolverDavid()
-#		self.__cubeSolver = SearchSolver()
+#		self.__cubeSolver = CubeSolverDavid()
+		self.__cubeSolver = SearchSolver()
 		self.__cubeSolver.solve(self.__cube)
 
 

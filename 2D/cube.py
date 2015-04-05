@@ -11,22 +11,28 @@ class Cube:
 	"""
 
 	# Some constants
-	Top = "U"
-	Bottom = "D"
-	Left = "L"
-	Right = "R"
-	Front = "F"
-	Back = "B"
-	Center = "C"
-	Middle = "M"
-	Top_ = "U'"
-	Bottom_ = "D'"
-	Left_ = "L'"
-	Right_ = "R'"
-	Front_ = "F'"
-	Back_ = "B'"
-	Center_ = "C'"
-	Middle_ = "M'"
+
+	Top = 1
+	Bottom = 2
+	Left = 3
+	Right = 4
+	Front = 5
+	Middle = 6
+	Center = 7
+
+	Back = 8
+
+	Top_ = -1
+	Bottom_ = -2
+	Left_ = -3
+	Right_ = -4
+	Front_ = -5
+	Middle_ = -6
+	Center_ = -7
+
+	Back_ = -8
+
+	Moves = None
 
 	White = 0
 	Yellow = 1
@@ -36,6 +42,27 @@ class Cube:
 	Blue = 5
 
 	def __init__(self, n):
+		if Cube.Moves is None:
+			Cube.Moves = {
+				1: Cube.U,
+				2: Cube.D,
+				3: Cube.L,
+				4: Cube.R,
+				5: Cube.F,
+				6: Cube.M,
+				7: Cube.C,
+				8: Cube.B,
+
+				-1: Cube.U_,
+				-2: Cube.D_,
+				-3: Cube.L_,
+				-4: Cube.R_,
+				-5: Cube.F_,
+				-6: Cube.M_,
+				-7: Cube.C_,
+				-8: Cube.B_
+			}
+
 		self.n = n
 		# Initialize all faces solved
 		# -----

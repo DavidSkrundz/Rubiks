@@ -32,7 +32,7 @@ class Cube:
 
 	Back_ = -8
 
-	Cube.Moves = None
+	Moves = None
 
 	White = 0
 	Yellow = 1
@@ -42,7 +42,7 @@ class Cube:
 	Blue = 5
 
 	def __init__(self, n):
-		if Cube.Moves is None
+		if Cube.Moves is None:
 			Cube.Moves = {
 				1: Cube.U,
 				2: Cube.D,
@@ -60,13 +60,7 @@ class Cube:
 				-5: Cube.F_,
 				-6: Cube.M_,
 				-7: Cube.C_,
-				-8: Cube.B_,
-
-				11: Cube.RRR,
-				-11:Cube.RRR_,
-
-				12: Cube.UUU,
-				-12:Cube.UUU_
+				-8: Cube.B_
 			}
 
 		self.n = n

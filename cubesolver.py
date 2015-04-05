@@ -13,7 +13,7 @@ class CubeSolver:
 	def solve(self, cube):
 		if self.currentCube:
 			raise ValueError("I'm already solving a cube you scrub")
-		if cube.n != self.n:
+		if cube.N != self.n:
 			raise ValueError("Cube size does not match solution size")
 		self.currentCube = cube
 		self.solved = False

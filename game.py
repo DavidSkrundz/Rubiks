@@ -6,6 +6,7 @@ import pygame
 from pygame.mixer import Sound
 from pygame.event import Event
 from cubemoverenderer import CubeMoveRenderer
+from searchsolver import SearchSolver
 
 handCursor = (
 	"                        ",
@@ -82,14 +83,16 @@ class Game(Runnable):
 		self.reset()
 
 	def reset(self, arg=None):
-		N = 3
+		N = 2
 		self.__cube = Cube(N)
 		self.__cubeRenderer = CubeRenderer(350, 200)
 
 		self.buttons = []
 		self.buttons.append(TextButton((0, 0, 100, 60), "Reset", self.reset))
 		self.buttons.append(TextButton((0, 61, 100, 60), "Scramble", self.scramble))
-# 		self.buttons.append(TextButton((0, 122, 100, 60), "Solve", self.solve))
+
+		if N == 2:
+			self.buttons.append(TextButton((0, 122, 100, 60), "Solve", self.solve))
 		self.buttons += self.__cube.generateButtons(0, 200)
 
 		self.music = False
@@ -100,6 +103,9 @@ class Game(Runnable):
 		self.wasNotSolved = False
 # 		self.__historyRenderer = CubeHistoryRenderer(0, 183, 24, 300)
 
+		self.solving = False
+		self.cubeSolver = None
+
 		self.wasScrambled = False
 		self.maxScramble = 15*N
 		self.scrambleCounter = self.maxScramble
@@ -109,6 +115,11 @@ class Game(Runnable):
 	def scramble(self, arg=None):
 		self.reset()
 		self.scrambleCounter = 0
+
+	def solve(self, arg=None):
+		self.solving = True
+		self.cubeSolver = SearchSolver(2)
+		self.cubeSolver.solve(self.__cube)
 
 	def scroll(self, up):
 		"""
@@ -146,6 +157,9 @@ class Game(Runnable):
 						button.activate()
 
 	def tick(self, keypressEvent):
+		if self.solving == True and not self.cubeSolver.solved:
+			self.cubeSolver.update()
+			return
 		if self.scrambleCounter == self.maxScramble:
 			# The user may have control over the cube
 			if self.isPlaying:

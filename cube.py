@@ -30,6 +30,7 @@ class Cube:
 	Front = 5
 	Middle = -6
 	Center = 7
+	Back = 8
 
 	Top_ = -1
 	Bottom_ = 2
@@ -38,6 +39,7 @@ class Cube:
 	Front_ = -5
 	Middle_ = 6
 	Center_ = -7
+	Back_ = -8
 
 	TurnRRR = 11
 	TurnRRR_=-11
@@ -337,6 +339,16 @@ class Cube:
 		self.moveQueue.append((self.__F_, offsets, animate))
 		if timed:
 			self.performMove((self.Front_, offsets))
+
+	def B(self, offsets, animate=True, timed=True):
+		self.UUU_(animate, timed)
+		self.R(offsets, animate, timed)
+		self.UUU(animate, timed)
+
+	def B_(self, offsets, animate=True, timed=True):
+		self.UUU_(animate, timed)
+		self.R_(offsets, animate, timed)
+		self.UUU(animate, timed)
 
 	def M(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__M, offsets, animate))

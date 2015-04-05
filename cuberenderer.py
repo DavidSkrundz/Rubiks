@@ -113,18 +113,18 @@ class CubeRenderer:
 		if self.deltaRotateX > 90:
 			self.deltaRotateX -= 90
 			self.rotateZ += 90
-			cube.UUU(False)
+			cube.UUU(False, False)
 		if self.deltaRotateX < 0:
 			self.deltaRotateX += 90
 			self.rotateZ -= 90
-			cube.UUU_(False)
+			cube.UUU_(False, False)
 		if self.deltaRotateZ > 90:
 			if self.deltaRotateX < 10:
 				self.deltaRotateZ -= 90
 				self.rotateX -= 90
-				cube.RRR(False)
+				cube.RRR(False, False)
 		if self.deltaRotateZ < 0:
 			if self.deltaRotateX < 10:
 				self.deltaRotateZ += 90
 				self.rotateX += 90
-				cube.RRR_(False)
+				cube.RRR_(False, False)

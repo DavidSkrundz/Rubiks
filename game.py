@@ -237,20 +237,8 @@ class Game(Runnable):
 			self.wasScrambled = True
 			self.isPlaying = False
 
-
-
-# 				# Handle the keypress event if it exists
-# 				if keypressEvent:
-# 					keyCode = keypressEvent.key
-# 					rotateFunction = None
-# 					if keyCode == pygame.K_q:
-# 						rotateFunction = self.__cube.U
-# 					elif keyCode == pygame.K_e:
-# 						rotateFunction = self.__cube.U_
-
-
 	def render(self, screen):
 		self.__cubeRenderer.render(screen, self.__cube)
-		self.__cube.cubeTimer.render(screen, 300, 300)
+		self.__cube.cubeTimer.render(screen, 100, 0)
 		for button in self.buttons:
 			button.render(screen)

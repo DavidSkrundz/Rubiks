@@ -90,7 +90,7 @@ class Cube:
 		# A 3D array - each N long.
 		#
 		# The Outside Array is the vertical layer - 0 is top, N is bottom
-		# The Middle Array is the Row - 0 is top, N is bottom
+		# The Middle Array is the Row - 0 is front, N is back
 		# The Inside Array is the column - 0 is left, N is right
 		self.cubies = []
 		# Each cubie is 1x1x1 in size centered at the point given
@@ -287,8 +287,8 @@ class Cube:
 			self.cubeTimer.startTime = pygame.time.get_ticks()
 			self.cubeTimer.endTime = None
 
-			pygame.mixer.music.load("assets/audio/BGM.wav")
-			pygame.mixer.music.play(loops=-1)
+# 			pygame.mixer.music.load("assets/audio/BGM.wav")
+# 			pygame.mixer.music.play(loops=-1)
 
 	def U(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__U, offsets, animate))

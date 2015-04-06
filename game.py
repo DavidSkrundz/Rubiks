@@ -84,7 +84,7 @@ class Game(Runnable):
 		self.reset()
 
 	def reset(self, arg=None):
-		N = 5
+		N = 3
 		self.__cube = Cube(N)
 		self.__cubeRenderer = CubeRenderer(200, 100)
 
@@ -102,7 +102,7 @@ class Game(Runnable):
 		self.isPlaying = False
 		self.didPlay = False
 		self.wasNotSolved = False
-		self.__historyRenderer = CubeHistoryRenderer(0, 400, 700, 300)
+		self.__historyRenderer = CubeHistoryRenderer(0, 300, 700, 400)
 
 		self.solving = False
 		self.cubeSolver = None
@@ -127,11 +127,11 @@ class Game(Runnable):
 		1 for Up
 		"""
 		mouseX, mouseY = pygame.mouse.get_pos()
-# 		if mouseX > self.__historyRenderer.x and mouseY > self.__historyRenderer.y and mouseX < self.__historyRenderer.x + self.__historyRenderer.surfaceWidth and mouseY < self.__historyRenderer.y + self.__historyRenderer.height:
-# 			if up == 1:
-# 				self.__historyRenderer.surfaceY = min(self.__historyRenderer.surfaceY + 10, self.__historyRenderer.surfaceHeight - self.__historyRenderer.height)
-# 			else:
-# 				self.__historyRenderer.surfaceY = max(self.__historyRenderer.surfaceY - 10, 0)
+		if mouseX > self.__historyRenderer.x and mouseY > self.__historyRenderer.y and mouseX < self.__historyRenderer.x + self.__historyRenderer.surfaceWidth and mouseY < self.__historyRenderer.y + self.__historyRenderer.height:
+			if up == 1:
+				self.__historyRenderer.surfaceY = min(self.__historyRenderer.surfaceY + 10, self.__historyRenderer.surfaceHeight - self.__historyRenderer.height)
+			else:
+				self.__historyRenderer.surfaceY = max(self.__historyRenderer.surfaceY - 10, 0)
 
 	def mouseMove(self, event):
 		self.__cubeRenderer.mouseMove(event.pos[0], event.pos[1], event.rel[0], event.rel[1])
@@ -241,5 +241,6 @@ class Game(Runnable):
 	def render(self, screen):
 		self.__cubeRenderer.render(screen, self.__cube)
 		self.__cube.cubeTimer.render(screen, 100, 0)
+		self.__historyRenderer.render(screen, self.__cube)
 		for button in self.buttons:
 			button.render(screen)

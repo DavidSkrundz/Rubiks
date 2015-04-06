@@ -168,6 +168,7 @@ class Cube:
 			if self.wasUnsolved:
 				self.wasUnsolved = False
 				self.cubeTimer.endTime = pygame.time.get_ticks()
+				self.moveQueue = []
 				# Play the VICTORY SOUND!!!
 				winSound = Sound(file = "assets/audio/WIN.wav")
 				winSound.play()

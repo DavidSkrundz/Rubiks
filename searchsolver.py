@@ -1,6 +1,7 @@
 from cubesolver import CubeSolver
 from cubie import Cubie
 import math
+from cube import Cube
 
 W = Cubie.White
 R = Cubie.Red
@@ -25,8 +26,8 @@ def colorToInt(color):
 		return 2
 
 class SearchSolver(CubeSolver):
-	def __init__(self, n):
-		CubeSolver.__init__(self, n)
+	def __init__(self):
+		CubeSolver.__init__(self)
 
 		# Constant - The cubie pairs
 		# Some magic
@@ -42,39 +43,43 @@ class SearchSolver(CubeSolver):
 		self.sol = [-1] * 12
 		self.adj = [[0] * 6 for _ in range(6)]
 
+		self.stage = 0
+
 	def countAdjacentPairs(self):
+		n = self.currentCube.N - 1
+
 		# Construct an array of the color of the faces
 		self.posit = []
 		# Bottom
-		self.posit += [colorToInt(self.currentCube.cubies[1][1][0].topColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][1][1].topColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][0][0].topColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][0][1].topColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][n][0].topColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][n][n].topColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][0][0].topColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][0][n].topColor())]
 		# Left
 		self.posit += [colorToInt(self.currentCube.cubies[0][0][0].rightColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[0][1][0].rightColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][0][0].rightColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][1][0].rightColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[0][n][0].rightColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][0][0].rightColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][n][0].rightColor())]
 		# Back
-		self.posit += [colorToInt(self.currentCube.cubies[0][1][0].backColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[0][1][1].backColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][1][0].backColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][1][1].backColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[0][n][0].backColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[0][n][n].backColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][n][0].backColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][n][n].backColor())]
 		# Top
-		self.posit += [colorToInt(self.currentCube.cubies[0][1][0].bottomColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[0][1][1].bottomColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[0][n][0].bottomColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[0][n][n].bottomColor())]
 		self.posit += [colorToInt(self.currentCube.cubies[0][0][0].bottomColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[0][0][1].bottomColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[0][0][n].bottomColor())]
 		# Right
-		self.posit += [colorToInt(self.currentCube.cubies[0][0][1].leftColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[0][1][1].leftColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][0][1].leftColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][1][1].leftColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[0][0][n].leftColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[0][n][n].leftColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][0][n].leftColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][n][n].leftColor())]
 		# Front
 		self.posit += [colorToInt(self.currentCube.cubies[0][0][0].frontColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[0][0][1].frontColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][0][0].frontColor())]
-		self.posit += [colorToInt(self.currentCube.cubies[1][0][1].frontColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[0][0][n].frontColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][0][0].frontColor())]
+		self.posit += [colorToInt(self.currentCube.cubies[n][0][n].frontColor())]
 
 		for a in range(0, 48, 2):
 			self.adj[self.posit[self.pieces[a]]][self.posit[self.pieces[a+1]]] += 1
@@ -233,6 +238,13 @@ class SearchSolver(CubeSolver):
 		return q
 
 	def update(self):
+		CubeSolver.update(self)
+
+		if self.stage:
+			if self.currentAlgorithmSteps:
+				return
+			self.solved = True
+
 		self.countAdjacentPairs()
 		self.calcPerm()
 
@@ -284,21 +296,45 @@ class SearchSolver(CubeSolver):
 			for l in range(12):
 				if self.search(0, q, t, l, -1):
 					break
-			t = "Solution:"
 
-			# self.sol contains the solution
-			t += str(self.sol)
+			# Process the solution
+			for moveNum in self.sol:
+				# 0x - U
+				# 1x - R
+				# 2x - F
+				#
+				# x0 - 1
+				# x1 - 2
+				# x2 - '
+				if moveNum < 10: # U
+					if moveNum % 10 == 0: # 1
+						self.currentAlgorithmSteps += [(Cube.Top, 0)]
+					elif moveNum % 10 == 1: # 2
+						self.currentAlgorithmSteps += [(Cube.Top, 0), (Cube.Top, 0)]
+					elif moveNum % 10 == 2: # '
+						self.currentAlgorithmSteps += [(Cube.Top_, 0)]
+					else: # ERR
+						pass
+				elif moveNum < 20: # R
+					if moveNum % 10 == 0: # 1
+						self.currentAlgorithmSteps += [(Cube.Right, 0)]
+					elif moveNum % 10 == 1: # 2
+						self.currentAlgorithmSteps += [(Cube.Right, 0), (Cube.Right, 0)]
+					elif moveNum % 10 == 2: # '
+						self.currentAlgorithmSteps += [(Cube.Right_, 0)]
+					else: # ERR
+						pass
+				elif moveNum < 30: # F
+					if moveNum % 10 == 0: # 1
+						self.currentAlgorithmSteps += [(Cube.Front, 0)]
+					elif moveNum % 10 == 1: # 2
+						self.currentAlgorithmSteps += [(Cube.Front, 0), (Cube.Front, 0)]
+					elif moveNum % 10 == 2: # '
+						self.currentAlgorithmSteps += [(Cube.Front_, 0)]
+					else: # ERR
+						pass
+				else: # ERR
+					pass
+		self.stage += 1
 
-			# 0 - U
-			# 2 - U'
-			#
-			#
-			#
-			#12 - R'
-			#
-			#
-
-			print(t)
-
-		CubeSolver.update(self)
-		self.solved = True
+# 			print(t)

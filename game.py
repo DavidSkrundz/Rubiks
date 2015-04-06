@@ -7,6 +7,7 @@ from pygame.mixer import Sound
 from pygame.event import Event
 from cubemoverenderer import CubeMoveRenderer
 from searchsolver import SearchSolver
+from cubehistoryrenderer import CubeHistoryRenderer
 
 handCursor = (
 	"                        ",
@@ -83,9 +84,9 @@ class Game(Runnable):
 		self.reset()
 
 	def reset(self, arg=None):
-		N = 2
+		N = 5
 		self.__cube = Cube(N)
-		self.__cubeRenderer = CubeRenderer(350, 200)
+		self.__cubeRenderer = CubeRenderer(200, 100)
 
 		self.buttons = []
 		self.buttons.append(TextButton((0, 0, 100, 60), "Reset", self.reset))
@@ -93,7 +94,7 @@ class Game(Runnable):
 
 		if N == 2:
 			self.buttons.append(TextButton((0, 122, 100, 60), "Solve", self.solve))
-		self.buttons += self.__cube.generateButtons(0, 200)
+		self.buttons += self.__cube.generateButtons(400, 0)
 
 		self.music = False
 
@@ -101,7 +102,7 @@ class Game(Runnable):
 		self.isPlaying = False
 		self.didPlay = False
 		self.wasNotSolved = False
-# 		self.__historyRenderer = CubeHistoryRenderer(0, 183, 24, 300)
+		self.__historyRenderer = CubeHistoryRenderer(0, 400, 700, 300)
 
 		self.solving = False
 		self.cubeSolver = None
@@ -118,7 +119,7 @@ class Game(Runnable):
 
 	def solve(self, arg=None):
 		self.solving = True
-		self.cubeSolver = SearchSolver(2)
+		self.cubeSolver = SearchSolver()
 		self.cubeSolver.solve(self.__cube)
 
 	def scroll(self, up):

@@ -3,7 +3,7 @@ from game import Game
 import pygame
 
 app = Application()
-app.initWindow(600, 483)
+app.initWindow(700, 700)
 app.setWindowTitle("Rubik's Cube")
 
 appIcon = pygame.image.load("assets/FreshCube.png").convert()

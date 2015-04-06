@@ -287,8 +287,8 @@ class Cube:
 			self.cubeTimer.startTime = pygame.time.get_ticks()
 			self.cubeTimer.endTime = None
 
-# 			pygame.mixer.music.load("assets/audio/BGM.wav")
-# 			pygame.mixer.music.play(loops=-1)
+			pygame.mixer.music.load("assets/audio/BGM.wav")
+			pygame.mixer.music.play(loops=-1)
 
 	def U(self, offsets, animate=True, timed=True):
 		self.moveQueue.append((self.__U, offsets, animate))

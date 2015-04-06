@@ -4,8 +4,7 @@ class CubeSolver:
 	"""
 	The base class for cube solvers
 	"""
-	def __init__(self, n):
-		self.n = n
+	def __init__(self):
 		self.currentAlgorithmSteps = []
 		self.currentCube = None
 		self.solved = True
@@ -13,8 +12,6 @@ class CubeSolver:
 	def solve(self, cube):
 		if self.currentCube:
 			raise ValueError("I'm already solving a cube you scrub")
-		if cube.N != self.n:
-			raise ValueError("Cube size does not match solution size")
 		self.currentCube = cube
 		self.solved = False
 
@@ -24,36 +21,36 @@ class CubeSolver:
 		"""
 		if self.currentAlgorithmSteps:
 			# Perform the next algorithm step
-			step = self.currentAlgorithmSteps.pop(0)
+			(step, offset) = self.currentAlgorithmSteps.pop(0)
 			if step == Cube.Top:
-				self.currentCube.U()
+				self.currentCube.U(offset)
 			elif step == Cube.Top_:
-				self.currentCube.U_()
+				self.currentCube.U_(offset)
 			elif step == Cube.Bottom:
-				self.currentCube.D()
+				self.currentCube.D(offset)
 			elif step == Cube.Bottom_:
-				self.currentCube.D_()
+				self.currentCube.D_(offset)
 			elif step == Cube.Left:
-				self.currentCube.L()
+				self.currentCube.L(offset)
 			elif step == Cube.Left_:
-				self.currentCube.L_()
+				self.currentCube.L_(offset)
 			elif step == Cube.Right:
-				self.currentCube.R()
+				self.currentCube.R(offset)
 			elif step == Cube.Right_:
-				self.currentCube.R_()
+				self.currentCube.R_(offset)
 			elif step == Cube.Front:
-				self.currentCube.F()
+				self.currentCube.F(offset)
 			elif step == Cube.Front_:
-				self.currentCube.F_()
+				self.currentCube.F_(offset)
 			elif step == Cube.Back:
-				self.currentCube.B()
+				self.currentCube.B(offset)
 			elif step == Cube.Back_:
-				self.currentCube.B_()
+				self.currentCube.B_(offset)
 			elif step == Cube.Center:
-				self.currentCube.C()
+				self.currentCube.C(offset)
 			elif step == Cube.Center_:
-				self.currentCube.C_()
+				self.currentCube.C_(offset)
 			elif step == Cube.Middle:
-				self.currentCube.M()
+				self.currentCube.M(offset)
 			elif step == Cube.Middle_:
-				self.currentCube.M_()
+				self.currentCube.M_(offset)

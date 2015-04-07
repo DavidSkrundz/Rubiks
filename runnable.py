@@ -21,3 +21,9 @@ class Runnable:
 
 	def render(self, screen):
 		pass
+
+	def mouseMove(self, event):
+		pass
+
+	def click(self, x, y, button, press):
+		pass

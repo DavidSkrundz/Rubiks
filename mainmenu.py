@@ -85,6 +85,16 @@ class Menu(Runnable):
 					if y > button.rect[1] and y < button.rect[1] + button.rect[3]:
 						button.activate()
 
+	def mouseMove(self, event):
+		# Check Mouse Cursor and whatnot
+		self.RunningApplication.setCursor(handCursor, 5, 7)
+		x = event.pos[0]
+		y = event.pos[1]
+		for button in self.buttons:
+			if x > button.rect[0] and x < button.rect[0] + button.rect[2]:
+				if y > button.rect[1] and y < button.rect[1] + button.rect[3]:
+					self.RunningApplication.setCursor(handCursorClick, 5, 1)
+
 	def tick(self, keypressEvent):
 		pass
 

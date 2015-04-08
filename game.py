@@ -66,7 +66,7 @@ class Game(Runnable):
 	"""
 	Manages the game loop and the rendering loop
 	"""
-	def __init__(self, application):
+	def __init__(self, application, N):
 		Runnable.__init__(self)
 
 		self.RunningApplication = application
@@ -80,19 +80,19 @@ class Game(Runnable):
 		self.scrambleCounter = None
 		self.maxScramble = None
 		self.wasScrambled = None
+		self.N = N
 
 		self.reset()
 
 	def reset(self, arg=None):
-		N = 3
-		self.__cube = Cube(N)
+		self.__cube = Cube(self.N)
 		self.__cubeRenderer = CubeRenderer(200, 100)
 
 		self.buttons = []
 		self.buttons.append(TextButton((0, 0, 100, 60), "Reset", self.reset))
 		self.buttons.append(TextButton((0, 61, 100, 60), "Scramble", self.scramble))
 
-		if N == 2:
+		if self.N == 2:
 			self.buttons.append(TextButton((0, 122, 100, 60), "Solve", self.solve))
 		self.buttons += self.__cube.generateButtons(400, 0)
 
@@ -108,7 +108,7 @@ class Game(Runnable):
 		self.cubeSolver = None
 
 		self.wasScrambled = False
-		self.maxScramble = 15*N
+		self.maxScramble = 15*self.N
 		self.scrambleCounter = self.maxScramble
 
 		pygame.mixer.music.fadeout(1)

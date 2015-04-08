@@ -4,22 +4,24 @@ from cubemoverenderer import CubeMoveRenderer
 import cube
 
 class Button:
-	def __init__(self, rect, action):
+	def __init__(self, rect, action, arg = None):
 		self.rect = rect
 		self.action = action
 		self.enabled = True
+		self.arg = arg
 
-	def activate(self, arg=None):
+	def activate(self):
 		if self.enabled:
-			self.action(arg)
+			self.action(self.arg)
 
-	def render(self, screen):
-		pygame.draw.rect(screen, Color(40, 40, 40), self.rect, 0)
-		pygame.draw.rect(screen, Color(80, 80, 80), self.rect, 1)
+	def render(self, screen, outerCol = Color(80,80,80), innerCol = Color(40,40,40)):
+		pygame.draw.rect(screen, innerCol, self.rect, 0)
+		pygame.draw.rect(screen, outerCol, self.rect, 1)
+
 
 class TextButton(Button):
-	def __init__(self, rect, text, action):
-		Button.__init__(self, rect, action)
+	def __init__(self, rect, text, action, arg = None):
+		Button.__init__(self, rect, action, arg)
 		self.text = text
 		self.font = pygame.font.Font(None, 20)
 

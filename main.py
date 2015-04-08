@@ -1,5 +1,6 @@
 from application import Application
 from game import Game
+from mainmenu import Menu
 import pygame
 
 app = Application()
@@ -11,7 +12,10 @@ app.setAppIcon(appIcon)
 
 app.setFrameRate(30)
 
-game = Game(app)
-app.registerRunnable(game)
+N = 3
+game = Game(app, N)
+mainmenu = Menu(app)
+app.registerRunnable(mainmenu)
+
 
 app.run()

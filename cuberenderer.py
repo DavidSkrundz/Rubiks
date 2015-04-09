@@ -61,8 +61,13 @@ class CubeRenderer:
 			return True
 		return False
 
+	def slowlySpin(self, amount):
+		self.rotateX += amount
+		self.rotateY += amount
+		self.rotateZ += amount
+
 	def render(self, screen, cube):
-		pygame.draw.rect(screen, Color(40, 40, 40), (self.newX, self.newY, self.newW, self.newH), 0)
+		pygame.draw.rect(screen, Color(0, 0, 0), (self.newX, self.newY, self.newW, self.newH), 0)
 
 		self.viewer_distance = 5*cube.N
 

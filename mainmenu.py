@@ -2,6 +2,10 @@ from button import TextButton, ImageButton
 from runnable import Runnable
 import pygame
 from pygame.event import Event
+from cuberenderer import CubeRenderer
+from cube import Cube
+from game import Game
+
 handCursor = (
 	"                        ",
 	"                        ",
@@ -62,6 +66,13 @@ class Menu(Runnable):
 		self.RunningApplication.setCursor(handCursor, 5, 1)
 		self.elements()
 
+		self.cubeRenderer = CubeRenderer(700/2 - 50, 150)
+		self.cube = Cube(1)
+
+		self.size = None
+
+		self.alive = True
+
 	def elements(self):
 		self.buttons = []
 		self.buttons.append(TextButton((275,540,150,45), "Start Game", self.Start))
@@ -73,7 +84,10 @@ class Menu(Runnable):
 		self.buttons.append(TextButton((550, 440, 100, 60), "7x7x7", self.Size, 7))
 
 	def Start(self, args = None):
-		pass
+		if self.size:
+			game = Game(self.RunningApplication, self.size)
+			self.RunningApplication.registerRunnable(game)
+			self.alive = False
 
 	def click(self, x, y, button, press):
 		if not press:
@@ -96,11 +110,17 @@ class Menu(Runnable):
 					self.RunningApplication.setCursor(handCursorClick, 5, 1)
 
 	def tick(self, keypressEvent):
-		pass
+		self.cubeRenderer.slowlySpin(1)
+
+		return self.alive
 
 	def Size(self, args = None):
 		self.size = args
+		self.cube = Cube(self.size)
 
 	def render(self, screen):
 		for button in self.buttons:
 			button.render(screen)
+
+		if self.cube:
+			self.cubeRenderer.render(screen, self.cube)

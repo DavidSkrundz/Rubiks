@@ -4,7 +4,7 @@ import pygame
 from pygame.event import Event
 from cuberenderer import CubeRenderer
 from cube import Cube
-from game import Game
+import game
 
 handCursor = (
 	"                        ",
@@ -85,8 +85,8 @@ class Menu(Runnable):
 
 	def Start(self, args = None):
 		if self.size:
-			game = Game(self.RunningApplication, self.size)
-			self.RunningApplication.registerRunnable(game)
+			gameapp = game.Game(self.RunningApplication, self.size)
+			self.RunningApplication.registerRunnable(gameapp)
 			self.alive = False
 
 	def click(self, x, y, button, press):

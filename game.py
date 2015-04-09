@@ -8,6 +8,7 @@ from pygame.event import Event
 from cubemoverenderer import CubeMoveRenderer
 from searchsolver import SearchSolver
 from cubehistoryrenderer import CubeHistoryRenderer
+import mainmenu
 
 handCursor = (
 	"                        ",
@@ -91,9 +92,10 @@ class Game(Runnable):
 		self.buttons = []
 		self.buttons.append(TextButton((0, 0, 100, 60), "Reset", self.reset))
 		self.buttons.append(TextButton((0, 61, 100, 60), "Scramble", self.scramble))
+		self.buttons.append(TextButton((0,122, 100, 60), "Menu", self.menu))
 
 		if self.N == 2:
-			self.buttons.append(TextButton((0, 122, 100, 60), "Solve", self.solve))
+			self.buttons.append(TextButton((0, 183, 100, 60), "Solve", self.solve))
 		self.buttons += self.__cube.generateButtons(400, 0)
 
 		self.music = False
@@ -244,3 +246,8 @@ class Game(Runnable):
 		self.__historyRenderer.render(screen, self.__cube)
 		for button in self.buttons:
 			button.render(screen)
+
+	def menu(self, args = None):
+		menuapp = mainmenu.Menu(self.RunningApplication)
+		self.RunningApplication.registerRunnable(menuapp)
+		self.alive = False

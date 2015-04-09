@@ -82,6 +82,7 @@ class Menu(Runnable):
 		self.buttons.append(TextButton((350, 440, 100, 60), "5x5x5", self.Size, 5))
 		self.buttons.append(TextButton((450, 440, 100, 60), "6x6x6", self.Size, 6))
 		self.buttons.append(TextButton((550, 440, 100, 60), "7x7x7", self.Size, 7))
+		self.buttons.append(TextButton((600, 480, 50, 20), "Testing", self.uselessBouton))
 
 	def Start(self, args = None):
 		if self.size:
@@ -124,3 +125,6 @@ class Menu(Runnable):
 
 		if self.cube:
 			self.cubeRenderer.render(screen, self.cube)
+
+	def uselessBouton(self, args = None):
+		pass

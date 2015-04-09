@@ -84,6 +84,7 @@ class Game(Runnable):
 		self.N = N
 
 		self.reset()
+		self.alive = True
 
 	def reset(self, arg=None):
 		self.__cube = Cube(self.N)
@@ -239,6 +240,7 @@ class Game(Runnable):
 				self.scrambleCounter += 1
 			self.wasScrambled = True
 			self.isPlaying = False
+		return self.alive
 
 	def render(self, screen):
 		self.__cubeRenderer.render(screen, self.__cube)

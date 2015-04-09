@@ -3,6 +3,9 @@ from cubie import Cubie
 import math
 from cube import Cube
 
+#Adapted from wwww.jaapsch.net/puzzles/javascript/cube2j.htm
+#All credit and copyright belongs to www.jaapsch.net
+
 W = Cubie.White
 R = Cubie.Red
 O = Cubie.Orange

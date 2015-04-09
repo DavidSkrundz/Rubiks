@@ -24,6 +24,5 @@ class Runnable:
 
 	def mouseMove(self, event):
 		pass
-
 	def click(self, x, y, button, press):
 		pass

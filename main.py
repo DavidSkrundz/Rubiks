@@ -12,8 +12,6 @@ app.setAppIcon(appIcon)
 
 app.setFrameRate(30)
 
-N = 3
-game = Game(app, N)
 mainmenu = Menu(app)
 app.registerRunnable(mainmenu)
 
